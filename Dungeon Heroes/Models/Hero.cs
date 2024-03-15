@@ -13,15 +13,17 @@ namespace Dungeon_Heroes.Models
         internal double Mana { get; set; }
         internal int Money { get; set; }
         internal Armor Armor { get; set; }
+        internal Weapon Weapon { get; set; }
         internal List<Skill> Skills { get; set; }
 
-        internal Hero(string name, double health, double mana, int money, Armor armor, List<Skill> skills)
+        internal Hero(string name, double health, double mana, int money, Armor armor, Weapon weapon, List<Skill> skills)
         {
             Name = name;
             Health = health;
             Mana = mana;
             Money = money;
             Armor = armor;
+            Weapon = weapon;
             Skills = skills;
         }
 
@@ -35,6 +37,6 @@ namespace Dungeon_Heroes.Models
             return text;
         }
 
-        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money}$\nДоспехи: {Armor}\nУмения:\n{GetMySkills()}"; }
+        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money}$\nДоспехи: {Armor}\nОружие: {Weapon}\nУмения:\n{GetMySkills()}"; }
     }
 }

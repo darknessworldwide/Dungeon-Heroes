@@ -11,12 +11,28 @@ namespace Dungeon_Heroes.Game
     internal class Hub
     {
         Hero hero;
+        internal List<Armor> Armors { get; set; }
         internal List<Weapon> Weapons { get; set; }
         internal List<Skill> Skills { get; set; }
 
-        internal Hub(Hero hero)
+        internal Hub()
         {
-            this.hero = hero;
+            Armors = new List<Armor> // отредачить
+            {
+                new Armor("Простая кожаная броня", 1.1, 30),
+                new Armor("Рваная кольчуга", 1.4, 60),
+                new Armor("Кольчуга с кожаными вставками", 1.5, 70),
+                new Armor("Легкий пластинчатый доспех", 1.6, 80),
+                new Armor("Стальной корсет", 1.7, 90),
+                new Armor("Усиленная кольчуга", 1.8, 100),
+                new Armor("Бригантина", 1.9, 110),
+                new Armor("Тяжелый пластинчатый доспех", 2.2, 140),
+                new Armor("Бесшовная броня", 2.3, 150),
+                new Armor("Кольчуга с пластинами", 2.4, 160),
+                new Armor("Поврежденные латы", 2.6, 180),
+                new Armor("Латы", 2.7, 190),
+                new Armor("Доспех великого хранителя", 3.0, 250),
+            };
 
             Weapons = new List<Weapon>
             {
@@ -41,43 +57,39 @@ namespace Dungeon_Heroes.Game
 
             Skills = new List<Skill>
             {
-                new SteelShield("SteelShield", 1, hero),
+                new SteelShield("Стальной щит", 1, hero),
+                new Healing("Исцеление", 1, hero),
+                new Rage("Ярость", 1, hero),
             };
+        }
+
+        internal void SetHero(Hero hero)
+        {
+            this.hero = hero;
+        }
+
+        void ShowList<T>(List<T> list)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {list[i]}");
+            }
+            Console.WriteLine($"{list.Count + 1}. Назад");
+        }
+
+        internal void ShowArmors()
+        {
+            ShowList(Armors);
         }
 
         internal void ShowWeapons()
         {
-            for (int i = 0; i < Weapons.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Weapons[i]}");
-            }
+            ShowList(Weapons);
         }
 
         internal void ShowSkills()
         {
-            for (int i = 0; i < Skills.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Skills[i]}");
-            }
-        }
-
-        //internal void BuySkills()
-        //{
-        //    Console.WriteLine("Выберите новое умение для покупки:");
-        //    DisplaySkills();
-
-        //    int option;
-
-        //}
-
-        internal int GetOption(int len)
-        {
-            int option;
-            while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > len) //option > len + 1
-            {
-                Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
-            }
-            return option; 
+            ShowList(Skills);
         }
     }
 }

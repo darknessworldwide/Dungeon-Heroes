@@ -12,14 +12,12 @@ namespace Dungeon_Heroes
     {
         static void Main(string[] args)
         {
-            Player player = new Player();
             Hub hub = new Hub();
+            Player player = new Player(hub);
+            hub.SetHero(player.hero);
 
-            Hero hero = player.CreateHero(hub);
-
-            Console.WriteLine(hero);
-
-            Console.ReadLine();
+            Console.WriteLine(player.hero);
+            player.VisitTheHub();
         }
     }
 }

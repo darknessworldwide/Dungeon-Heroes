@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dungeon_Heroes.ItemInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Models
 {
-    internal class Armor
+    internal class Armor : IItem
     {
-        internal string Name { get; }
+        public string Name { get; }
         internal double Defense { get; set; }
-        internal int Price { get; }
+        public int Price { get; }
 
         internal Armor(string name, double defense, int price)
         {
