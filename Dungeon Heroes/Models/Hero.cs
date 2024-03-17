@@ -8,7 +8,7 @@ namespace Dungeon_Heroes.Models
 {
     internal class Hero
     {
-        internal string Name { get; }
+        internal string Name { get; set; }
         internal double Health { get; set; }
         internal double Mana { get; set; }
         internal int Money { get; set; }

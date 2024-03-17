@@ -28,7 +28,6 @@ namespace Dungeon_Heroes.Game
 
                 Console.WriteLine("Выберите начальное умение:");
                 hub.ShowSkills();
-                //Console.WriteLine($"{hub.Skills.Count + 1}. Сменить имя");
                 int option = GetOption(hub.Skills.Count);
                 if (option == hub.Skills.Count + 1) continue;
 
@@ -42,7 +41,7 @@ namespace Dungeon_Heroes.Game
         {
             while (true)
             {
-                Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Выйти из игры");
+                Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Сменить имя\n6. Выйти из игры");
 
                 int option;
                 switch (Console.ReadLine())
@@ -74,13 +73,26 @@ namespace Dungeon_Heroes.Game
                     case "4": // доделать выбор данжа
                         break;
 
-                    case "5": return;
+                    case "5":
+                        ChangeHeroName();
+                        break;
+
+                    case "6":
+                        return;
 
                     default:
                         Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
                         break;
                 }
             }
+        }
+
+        void ChangeHeroName()
+        {
+            Console.Write("Введите новое имя для вашего героя: ");
+            string newName = Console.ReadLine();
+            hero.Name = newName;
+            Console.WriteLine($"Имя вашего героя успешно изменено на {newName}");
         }
 
         void BuyGoods<T>(T item) where T : IItem
