@@ -9,9 +9,17 @@ namespace Dungeon_Heroes.Game
 {
     internal class Dungeon
     {
-        private Random random = new Random();
+        Random random = new Random();
+        Hero hero;
+        Player player;
 
-        internal void EnterTheDungeon(Hero hero)
+        internal Dungeon(Hero hero, Player player)
+        {
+            this.hero = hero;
+            this.player = player;
+        }
+
+        internal void EnterTheDungeon()
         {
             int numberOfRooms = random.Next(5, 10);
             for (int i = 0; i < numberOfRooms; i++)
@@ -22,7 +30,7 @@ namespace Dungeon_Heroes.Game
                     case 0:
                         Console.WriteLine("Вы столкнулись с врагом!");
                         Enemy enemy = GenerateRandomEnemy();
-                        FightEnemy(hero, enemy);
+                        FightEnemy(enemy);
                         break;
                     case 1:
                         Console.WriteLine("Вы нашли комнату с сокровищем!");
@@ -30,8 +38,16 @@ namespace Dungeon_Heroes.Game
                         break;
                     case 2:
                         Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы!");
-                        RestoreHealthOrMana(hero);
+                        RestoreHealthOrMana();
                         break;
+                }
+
+                Console.WriteLine("Вы желаете сбежать из подземелья в хаб? (да/нет)");
+                string option = Console.ReadLine();
+                if (option == "да")
+                {
+                    Escape();
+                    break;
                 }
             }
             Console.WriteLine("Вы исследовали все комнаты подземелья.");
@@ -42,15 +58,20 @@ namespace Dungeon_Heroes.Game
             string[] enemyTypes = { "Скелет", "Гоблин", "Орк", "Вампир", "Дракон" };
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
             double enemyHealth = random.Next(50, 200);
-            return new Enemy(randomEnemyType, enemyHealth);
+            double enemyDamage = random.Next(15, 30);
+            return new Enemy(randomEnemyType, enemyHealth, enemyDamage);
         }
 
-        private void FightEnemy(Hero hero, Enemy enemy)
+        private void FightEnemy(Enemy enemy)
         {
             Console.WriteLine($"Вы столкнулись с врагом {enemy.Type} HP[{enemy.Health}]");
-            while (hero.Health > 0 && enemy.Health > 0)
+
+            while (true)
             {
-                // Логика боя между героем и врагом
+                Console.WriteLine($"Выберите умение из списка: {hero.GetMySkills()}");
+                int option = player.GetOption(hero.Skills.Count);
+
+                hero.Skills[option - 1].UseSkill();
             }
             if (hero.Health <= 0)
             {
@@ -62,38 +83,31 @@ namespace Dungeon_Heroes.Game
             }
         }
 
-        private void RestoreHealthOrMana(Hero hero)
+        private void RestoreHealthOrMana()
         {
-            Console.WriteLine("Что вы хотите восстановить? (1 - Здоровье, 2 - Магическая сила)");
-            int choice;
-            while (!int.TryParse(Console.ReadLine(), out choice) || (choice != 1 && choice != 2))
-            {
-                Console.WriteLine("Неправильный выбор! Пожалуйста, выберите 1 или 2.");
-            }
+            Console.WriteLine("Что вы хотите восстановить?\n1. Здоровье\n2. Магическую силу");
 
-            switch (choice)
+            switch (Console.ReadLine())
             {
-                case 1:
+                case "1":
                     hero.Health = Math.Min(hero.Health + random.Next(20, 50), 100);
                     Console.WriteLine($"Ваше здоровье восстановлено. Здоровье: {hero.Health}");
                     break;
-                case 2:
+                case "2":
                     hero.Mana = Math.Min(hero.Mana + random.Next(20, 50), 100);
                     Console.WriteLine($"Ваша магическая сила восстановлена. Мана: {hero.Mana}");
                     break;
+                default:
+                    Console.WriteLine("Неправильный выбор! Пожалуйста, выберите 1 или 2.");
+                    break;
             }
         }
-    }
 
-    internal class Enemy
-    {
-        internal string Type { get; }
-        internal double Health { get; set; }
-
-        internal Enemy(string type, double health)
+        private void Escape()
         {
-            Type = type;
-            Health = health;
+            Console.WriteLine("Вы успешно сбежали из подземелья в хаб.");
+            hero.Health = 100;
+            hero.Mana = 100;
         }
     }
 }

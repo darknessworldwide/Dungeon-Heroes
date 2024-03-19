@@ -20,6 +20,8 @@ namespace Dungeon_Heroes.Models
             this.hero = hero;
         }
 
+        internal virtual void UseSkill() { }
+
         public override string ToString() { return $"{Name}"; }
     }
 }

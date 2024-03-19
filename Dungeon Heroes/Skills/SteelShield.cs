@@ -14,7 +14,7 @@ namespace Dungeon_Heroes.Skills
 
         internal SteelShield(string name, int price, Hero hero) : base(name, price, hero) { }
 
-        internal void UseSkill()
+        internal override void UseSkill()
         {
             defaultValue = hero.Armor.Defense;
 

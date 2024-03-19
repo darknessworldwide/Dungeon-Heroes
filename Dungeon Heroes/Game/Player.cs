@@ -11,12 +11,12 @@ namespace Dungeon_Heroes.Game
     internal class Player
     {
         Hub hub;
-        internal Hero hero { get; set; }
+        internal Hero Hero { get; set; }
 
         internal Player(Hub hub)
         {
             this.hub = hub;
-            hero = CreateHero();
+            Hero = CreateHero();
         }
 
         internal Hero CreateHero()
@@ -91,28 +91,28 @@ namespace Dungeon_Heroes.Game
         {
             Console.Write("Введите новое имя для вашего героя: ");
             string newName = Console.ReadLine();
-            hero.Name = newName;
+            Hero.Name = newName;
             Console.WriteLine($"Имя вашего героя успешно изменено на {newName}");
         }
 
         void BuyGoods<T>(T item) where T : IItem
         {
             if (NotEnoughMoney(item.Price)) return;
-            hero.Money -= item.Price;
+            Hero.Money -= item.Price;
 
             if (typeof(T) == typeof(Armor))
             {
-                hero.Armor = (Armor)(object)item;
+                Hero.Armor = (Armor)(object)item;
                 hub.Armors.Remove((Armor)(object)item);
             }
             else if (typeof(T) == typeof(Weapon))
             {
-                hero.Weapon = (Weapon)(object)item;
+                Hero.Weapon = (Weapon)(object)item;
                 hub.Weapons.Remove((Weapon)(object)item);
             }
             else if (typeof(T) == typeof(Skill))
             {
-                hero.Skills.Add((Skill)(object)item);
+                Hero.Skills.Add((Skill)(object)item);
                 hub.Skills.Remove((Skill)(object)item);
             }
 
@@ -121,7 +121,7 @@ namespace Dungeon_Heroes.Game
 
         bool NotEnoughMoney(int cost)
         {
-            if (hero.Money < cost)
+            if (Hero.Money < cost)
             {
                 Console.WriteLine("Не хватает монет!\n");
                 return true;
@@ -129,7 +129,7 @@ namespace Dungeon_Heroes.Game
             return false;
         }
 
-        int GetOption(int len)
+        internal int GetOption(int len)
         {
             int option;
             while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > len + 1)

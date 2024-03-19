@@ -47,6 +47,7 @@
     <Compile Include="ItemInterfaces\IItem.cs" />
     <Compile Include="Models\Armor.cs" />
     <Compile Include="Game\Dungeon.cs" />
+    <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\Hero.cs" />
     <Compile Include="Game\Hub.cs" />
     <Compile Include="Program.cs" />

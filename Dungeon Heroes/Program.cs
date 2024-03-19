@@ -14,9 +14,9 @@ namespace Dungeon_Heroes
         {
             Hub hub = new Hub();
             Player player = new Player(hub);
-            hub.SetHero(player.hero);
+            hub.SetHero(player.Hero);
 
-            Console.WriteLine(player.hero);
+            Console.WriteLine(player.Hero);
             player.VisitTheHub();
         }
     }
