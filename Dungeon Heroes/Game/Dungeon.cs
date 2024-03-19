@@ -68,18 +68,18 @@ namespace Dungeon_Heroes.Game
 
             while (true)
             {
-                Console.WriteLine($"Выберите умение из списка: {hero.GetMySkills()}");
-                int option = player.GetOption(hero.Skills.Count);
-
-                hero.Skills[option - 1].UseSkill();
-            }
-            if (hero.Health <= 0)
-            {
-                Console.WriteLine("Вы проиграли!");
-            }
-            else
-            {
-                Console.WriteLine("Вы победили врага!");
+                hero.Attack(enemy);
+                if (enemy.Health <= 0)
+                {
+                    Console.WriteLine("Вы победили врага!");
+                    return;
+                }
+                enemy.Attack(hero);
+                if (hero.Health <= 0)
+                {
+                    Console.WriteLine("Вы проиграли!");
+                    return;
+                }
             }
         }
 
