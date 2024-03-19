@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\DungeonLevel.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="ItemInterfaces\IItem.cs" />
     <Compile Include="Models\Armor.cs" />

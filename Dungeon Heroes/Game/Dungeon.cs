@@ -12,23 +12,24 @@ namespace Dungeon_Heroes.Game
         Random random = new Random();
         Hero hero;
         Player player;
+        DungeonLevel dungeonLevel;
 
-        internal Dungeon(Hero hero, Player player)
+        internal Dungeon(Hero hero, Player player, DungeonLevel dungeonLevel)
         {
             this.hero = hero;
             this.player = player;
+            this.dungeonLevel = dungeonLevel;
         }
 
         internal void EnterTheDungeon()
         {
-            int numberOfRooms = random.Next(5, 10);
+            int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms + 1);
             for (int i = 0; i < numberOfRooms; i++)
             {
                 int roomType = random.Next(3);
                 switch (roomType)
                 {
                     case 0:
-                        Console.WriteLine("Вы столкнулись с врагом!");
                         Enemy enemy = GenerateRandomEnemy();
                         FightEnemy(enemy);
                         break;
@@ -37,7 +38,6 @@ namespace Dungeon_Heroes.Game
                         hero.Money += random.Next(50, 200);
                         break;
                     case 2:
-                        Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы!");
                         RestoreHealthOrMana();
                         break;
                 }
@@ -57,8 +57,8 @@ namespace Dungeon_Heroes.Game
         {
             string[] enemyTypes = { "Скелет", "Гоблин", "Орк", "Вампир", "Дракон" };
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
-            double enemyHealth = random.Next(50, 200);
-            double enemyDamage = random.Next(15, 30);
+            double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth + 1);
+            double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage + 1);
             return new Enemy(randomEnemyType, enemyHealth, enemyDamage);
         }
 
@@ -85,6 +85,7 @@ namespace Dungeon_Heroes.Game
 
         private void RestoreHealthOrMana()
         {
+            Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы!");
             Console.WriteLine("Что вы хотите восстановить?\n1. Здоровье\n2. Магическую силу");
 
             switch (Console.ReadLine())

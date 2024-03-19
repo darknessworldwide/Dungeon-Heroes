@@ -70,7 +70,8 @@ namespace Dungeon_Heroes.Game
                         BuyGoods(hub.Skills[option - 1]);
                         break;
 
-                    case "4": // доделать выбор данжа
+                    case "4":
+                        ChooseDungeon();
                         break;
 
                     case "5":
@@ -85,14 +86,6 @@ namespace Dungeon_Heroes.Game
                         break;
                 }
             }
-        }
-
-        void ChangeHeroName()
-        {
-            Console.Write("Введите новое имя для вашего героя: ");
-            string newName = Console.ReadLine();
-            Hero.Name = newName;
-            Console.WriteLine($"Имя вашего героя успешно изменено на {newName}");
         }
 
         void BuyGoods<T>(T item) where T : IItem
@@ -137,6 +130,31 @@ namespace Dungeon_Heroes.Game
                 Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
             }
             return option;
+        }
+
+        void ChooseDungeon()
+        {
+            Console.WriteLine("Выберите уровень сложности подземелья:");
+            hub.ShowDungeonLevels();
+
+            int option = GetOption(hub.DungeonLevels.Count);
+            if (option == hub.DungeonLevels.Count + 1) return;
+
+            EnterDungeon(hub.DungeonLevels[option - 1]);
+        }
+
+        void EnterDungeon(DungeonLevel dungeonLevel) 
+        {
+            Dungeon dungeon = new Dungeon(Hero, this, dungeonLevel);
+            dungeon.EnterTheDungeon();
+        }
+
+        void ChangeHeroName()
+        {
+            Console.Write("Введите новое имя для вашего героя: ");
+            string newName = Console.ReadLine();
+            Hero.Name = newName;
+            Console.WriteLine($"Имя вашего героя успешно изменено на {newName}");
         }
     }
 }

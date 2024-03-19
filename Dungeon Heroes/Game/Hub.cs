@@ -14,6 +14,7 @@ namespace Dungeon_Heroes.Game
         internal List<Armor> Armors { get; set; }
         internal List<Weapon> Weapons { get; set; }
         internal List<Skill> Skills { get; set; }
+        internal List<DungeonLevel> DungeonLevels { get; }
 
         internal Hub()
         {
@@ -61,6 +62,13 @@ namespace Dungeon_Heroes.Game
                 new Healing("Исцеление", 1, hero),
                 new Rage("Ярость", 1, hero),
             };
+
+            DungeonLevels = new List<DungeonLevel>
+            {
+                new DungeonLevel("Лёгкий", 5, 8, 50, 100, 10, 20, 0.2),
+                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 0.15),
+                new DungeonLevel("Сложный", 12, 15, 150, 200, 30, 40, 0.1),
+            };
         }
 
         internal void SetHero(Hero hero)
@@ -90,6 +98,15 @@ namespace Dungeon_Heroes.Game
         internal void ShowSkills()
         {
             ShowList(Skills);
+        }
+
+        internal void ShowDungeonLevels()
+        {
+            for (int i = 0; i < DungeonLevels.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {DungeonLevels[i].Name}");
+            }
+            Console.WriteLine($"{DungeonLevels.Count + 1}. Назад");
         }
     }
 }
