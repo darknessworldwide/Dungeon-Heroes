@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dungeon_Heroes.Skills;
 
 namespace Dungeon_Heroes.Models
 {
@@ -12,18 +8,20 @@ namespace Dungeon_Heroes.Models
         internal double Health { get; set; }
         internal double Damage { get; set; }
 
+        internal Skill[] Skills { get; }
+
         internal Enemy(string type, double health, double damage)
         {
             Type = type;
             Health = health;
             Damage = damage;
-        }
 
-        internal void Attack(Hero hero)
-        {
-            double damage = Damage;
-            hero.Health -= damage;
-            Console.WriteLine($"Враг {Type} атакует {hero.Name} и наносит {damage} урона. Здоровье {hero.Name}: {hero.Health}");
+            Skills = new Skill[]
+            {
+                new SteelShield("Стальной щит", 0),
+                new Healing("Исцеление", 0),
+                new Rage("Ярость", 0),
+            };
         }
     }
 }

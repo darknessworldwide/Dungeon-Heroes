@@ -1,9 +1,4 @@
 ﻿using Dungeon_Heroes.ItemInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Models
 {
@@ -11,16 +6,18 @@ namespace Dungeon_Heroes.Models
     {
         public string Name { get; }
         public int Price { get; }
-        Hero hero;
 
-        internal Skill(string name, int price, Hero hero)
+        internal Skill(string name, int price)
         {
             Name = name;
             Price = price;
-            this.hero = hero;
         }
 
-        internal virtual void UseSkill() { }
+        internal virtual void UseSkill(Hero hero) { }
+        internal virtual void StopSkill(Hero hero) { }
+
+        internal virtual void UseSkill(Enemy enemy) { }
+        internal virtual void StopSkill(Enemy enemy) { }
 
         public override string ToString() { return $"{Name}"; }
     }

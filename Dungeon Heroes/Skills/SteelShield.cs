@@ -1,31 +1,41 @@
 ﻿using Dungeon_Heroes.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Skills
 {
     internal class SteelShield : Skill
     {
-        Hero hero;
         double defaultValue;
 
-        internal SteelShield(string name, int price, Hero hero) : base(name, price, hero) { }
+        internal SteelShield(string name, int price) : base(name, price) { }
 
-        internal override void UseSkill()
+        internal override void UseSkill(Hero hero)
         {
             defaultValue = hero.Armor.Defense;
 
             double buff = 1.2;
+            int mana = 30;
             hero.Armor.Defense *= buff;
-            Console.WriteLine($"Защита увеличена на {(buff - 1) * 100}%");
+            hero.Mana -= mana;
+            Console.WriteLine($"DEF +{(buff - 1) * 100}% -{mana}MP");
         }
 
-        internal void StopSkill()
+        internal override void StopSkill(Hero hero)
         {
             hero.Armor.Defense = defaultValue;
+        }
+
+        internal override void UseSkill(Enemy enemy)
+        {
+            defaultValue = enemy.Health;
+
+            double buff = 1.1;
+            enemy.Health *= buff;
+        }
+
+        internal override void StopSkill(Enemy enemy)
+        {
+            enemy.Health = defaultValue;
         }
     }
 }

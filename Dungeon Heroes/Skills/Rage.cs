@@ -1,31 +1,41 @@
 ﻿using Dungeon_Heroes.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Skills
 {
     internal class Rage : Skill
     {
-        Hero hero;
         double defaultValue;
 
-        internal Rage(string name, int price, Hero hero) : base(name, price, hero) { }
+        internal Rage(string name, int price) : base(name, price) { }
 
-        internal override void UseSkill()
+        internal override void UseSkill(Hero hero)
         {
             defaultValue = hero.Weapon.Damage;
 
             double buff = 1.2;
+            int mana = 30;
             hero.Weapon.Damage *= buff;
-            Console.WriteLine($"Урон увеличен на {(buff - 1) * 100}%");
+            hero.Mana -= mana;
+            Console.WriteLine($"DMG +{(buff - 1) * 100}% -{mana}MP");
         }
 
-        internal void StopSkill()
+        internal override void StopSkill(Hero hero)
         {
             hero.Weapon.Damage = defaultValue;
+        }
+
+        internal override void UseSkill(Enemy enemy)
+        {
+            defaultValue = enemy.Damage;
+
+            double buff = 1.1;
+            enemy.Damage *= buff;
+        }
+
+        internal override void StopSkill(Enemy enemy)
+        {
+            enemy.Damage = defaultValue;
         }
     }
 }

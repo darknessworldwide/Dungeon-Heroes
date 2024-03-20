@@ -1,112 +1,145 @@
 ﻿using Dungeon_Heroes.Models;
-using Dungeon_Heroes.Skills;
+using Dungeon_Heroes.ItemInterfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Game
 {
     internal class Hub
     {
-        Hero hero;
-        internal List<Armor> Armors { get; set; }
-        internal List<Weapon> Weapons { get; set; }
-        internal List<Skill> Skills { get; set; }
-        internal List<DungeonLevel> DungeonLevels { get; }
+        private Shop shop;
+        private Hero hero;
 
-        internal Hub()
+        internal Hub(Shop shop, Hero hero)
         {
-            Armors = new List<Armor> // отредачить
-            {
-                new Armor("Простая кожаная броня", 1.1, 30),
-                new Armor("Рваная кольчуга", 1.4, 60),
-                new Armor("Кольчуга с кожаными вставками", 1.5, 70),
-                new Armor("Легкий пластинчатый доспех", 1.6, 80),
-                new Armor("Стальной корсет", 1.7, 90),
-                new Armor("Усиленная кольчуга", 1.8, 100),
-                new Armor("Бригантина", 1.9, 110),
-                new Armor("Тяжелый пластинчатый доспех", 2.2, 140),
-                new Armor("Бесшовная броня", 2.3, 150),
-                new Armor("Кольчуга с пластинами", 2.4, 160),
-                new Armor("Поврежденные латы", 2.6, 180),
-                new Armor("Латы", 2.7, 190),
-                new Armor("Доспех великого хранителя", 3.0, 250),
-            };
-
-            Weapons = new List<Weapon>
-            {
-                new Weapon("Огненная сфера", 1, 1, 1),
-                new Weapon("Веер пламени", 1, 1, 1),
-                new Weapon("Огненный кнут", 1, 1, 1),
-                new Weapon("Мощный поджог", 1, 1, 1),
-                new Weapon("Разрывной огненный шар", 1, 1, 1),
-
-                new Weapon("Громовое копьё", 1, 1, 1),
-                new Weapon("Божественные столпы света", 1, 1, 1),
-                new Weapon("Клинок тёмной Луны", 1, 1, 1),
-                new Weapon("Громовая стрела", 1, 1, 1),
-                new Weapon("Коса охоты на жизнь", 1, 1, 1),
-
-                new Weapon("Стрела души", 1, 1, 1),
-                new Weapon("Град кристаллов", 1, 1, 1),
-                new Weapon("Кристаллическое копьё души", 1, 1, 1),
-                new Weapon("Двуручный меч душ", 1, 1, 1),
-                new Weapon("Кристаллический наводящийся сгусток души", 1, 1, 1),
-            };
-
-            Skills = new List<Skill>
-            {
-                new SteelShield("Стальной щит", 1, hero),
-                new Healing("Исцеление", 1, hero),
-                new Rage("Ярость", 1, hero),
-            };
-
-            DungeonLevels = new List<DungeonLevel>
-            {
-                new DungeonLevel("Лёгкий", 5, 8, 50, 100, 10, 20, 0.2),
-                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 0.15),
-                new DungeonLevel("Сложный", 12, 15, 150, 200, 30, 40, 0.1),
-            };
-        }
-
-        internal void SetHero(Hero hero)
-        {
+            this.shop = shop;
             this.hero = hero;
         }
 
-        void ShowList<T>(List<T> list)
+        internal void VisitTheHub()
         {
-            for (int i = 0; i < list.Count; i++)
+            while (true)
             {
-                Console.WriteLine($"{i + 1}. {list[i]}");
+                Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Сменить имя\n6. Выйти из игры");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        ChooseArmor();
+                        break;
+
+                    case "2":
+                        ChooseWeapon();
+                        break;
+
+                    case "3":
+                        ChooseSkill();
+                        break;
+
+                    case "4":
+                        ChooseDungeon();
+                        break;
+
+                    case "5":
+                        ChangeHeroName();
+                        break;
+
+                    case "6":
+                        return;
+
+                    default:
+                        Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
+                        break;
+                }
             }
-            Console.WriteLine($"{list.Count + 1}. Назад");
         }
 
-        internal void ShowArmors()
+        private bool NotEnoughMoney(int cost)
         {
-            ShowList(Armors);
-        }
-
-        internal void ShowWeapons()
-        {
-            ShowList(Weapons);
-        }
-
-        internal void ShowSkills()
-        {
-            ShowList(Skills);
-        }
-
-        internal void ShowDungeonLevels()
-        {
-            for (int i = 0; i < DungeonLevels.Count; i++)
+            if (hero.Money < cost)
             {
-                Console.WriteLine($"{i + 1}. {DungeonLevels[i].Name}");
+                Console.WriteLine("Не хватает монет!\n");
+                return true;
             }
-            Console.WriteLine($"{DungeonLevels.Count + 1}. Назад");
+            return false;
+        }
+
+        private void BuyGoods<T>(T item) where T : IItem
+        {
+            if (NotEnoughMoney(item.Price)) return;
+            hero.Money -= item.Price;
+
+            if (typeof(T) == typeof(Armor))
+            {
+                hero.Armor = (Armor)(object)item;
+                shop.Armors.Remove((Armor)(object)item);
+            }
+            else if (typeof(T) == typeof(Weapon))
+            {
+                hero.Weapon = (Weapon)(object)item;
+                shop.Weapons.Remove((Weapon)(object)item);
+            }
+            else if (typeof(T) == typeof(Skill))
+            {
+                hero.Skills.Add((Skill)(object)item);
+                shop.Skills.Remove((Skill)(object)item);
+            }
+
+            Console.WriteLine($"Приобретено {item.Name}");
+        }
+
+        private void ChooseArmor()
+        {
+            shop.ShowArmors();
+
+            int option = shop.GetOption(shop.Armors.Count);
+            if (option == shop.Armors.Count + 1) return;
+
+            BuyGoods(shop.Armors[option - 1]);
+        }
+
+        private void ChooseWeapon()
+        {
+            shop.ShowWeapons();
+
+            int option = shop.GetOption(shop.Weapons.Count);
+            if (option == shop.Weapons.Count + 1) return;
+
+            BuyGoods(shop.Weapons[option - 1]);
+        }
+
+        private void ChooseSkill()
+        {
+            shop.ShowSkills();
+
+            int option = shop.GetOption(shop.Skills.Count);
+            if (option == shop.Skills.Count + 1) return;
+
+            BuyGoods(shop.Skills[option - 1]);
+        }
+
+        private void ChooseDungeon()
+        {
+            Console.WriteLine("Выберите уровень сложности подземелья:");
+            shop.ShowDungeonLevels();
+
+            int option = shop.GetOption(shop.DungeonLevels.Count);
+            if (option == shop.DungeonLevels.Count + 1) return;
+
+            EnterDungeon(shop.DungeonLevels[option - 1]);
+        }
+
+        private void EnterDungeon(DungeonLevel dungeonLevel)
+        {
+            Dungeon dungeon = new Dungeon(hero, dungeonLevel, shop);
+            dungeon.ExploreDungeon();
+        }
+
+        private void ChangeHeroName()
+        {
+            Console.Write("Введите новое имя для вашего героя: ");
+            string newName = Console.ReadLine();
+
+            hero.Name = newName;
+            Console.WriteLine($"Имя вашего героя изменено на {newName}");
         }
     }
 }

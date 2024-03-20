@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dungeon_Heroes.Game
+﻿namespace Dungeon_Heroes.Game
 {
     internal class DungeonLevel
     {
-        internal string Name { get; }
+        private string Difficulty { get; }
         internal int MinRooms { get; }
         internal int MaxRooms { get; }
         internal double MinEnemyHealth { get; }
@@ -17,9 +11,9 @@ namespace Dungeon_Heroes.Game
         internal double MaxEnemyDamage { get; }
         internal double TreasureChance { get; }
 
-        internal DungeonLevel(string name, int minRooms, int maxRooms, double minEnemyHealth, double maxEnemyHealth, double minEnemyDamage, double maxEnemyDamage, double treasureChance)
+        internal DungeonLevel(string difficulty, int minRooms, int maxRooms, double minEnemyHealth, double maxEnemyHealth, double minEnemyDamage, double maxEnemyDamage, double treasureChance)
         {
-            Name = name;
+            Difficulty = difficulty;
             MinRooms = minRooms;
             MaxRooms = maxRooms;
             MinEnemyHealth = minEnemyHealth;
@@ -28,5 +22,7 @@ namespace Dungeon_Heroes.Game
             MaxEnemyDamage = maxEnemyDamage;
             TreasureChance = treasureChance;
         }
+
+        public override string ToString() { return Difficulty; }
     }
 }

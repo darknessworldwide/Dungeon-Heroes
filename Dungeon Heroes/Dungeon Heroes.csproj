@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Game\DungeonLevel.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\Shop.cs" />
     <Compile Include="ItemInterfaces\IItem.cs" />
     <Compile Include="Models\Armor.cs" />
     <Compile Include="Game\Dungeon.cs" />

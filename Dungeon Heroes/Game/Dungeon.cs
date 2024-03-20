@@ -1,29 +1,25 @@
 ﻿using Dungeon_Heroes.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dungeon_Heroes.Game
 {
     internal class Dungeon
     {
-        Random random = new Random();
-        Hero hero;
-        Player player;
-        DungeonLevel dungeonLevel;
+        private Random random = new Random();
+        private Hero hero;
+        private DungeonLevel dungeonLevel;
+        private Shop shop;
 
-        internal Dungeon(Hero hero, Player player, DungeonLevel dungeonLevel)
+        internal Dungeon(Hero hero, DungeonLevel dungeonLevel, Shop shop)
         {
             this.hero = hero;
-            this.player = player;
             this.dungeonLevel = dungeonLevel;
+            this.shop = shop;
         }
 
-        internal void EnterTheDungeon()
+        internal void ExploreDungeon()
         {
-            int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms + 1);
+            int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms);
             for (int i = 0; i < numberOfRooms; i++)
             {
                 int roomType = random.Next(3);
@@ -57,24 +53,24 @@ namespace Dungeon_Heroes.Game
         {
             string[] enemyTypes = { "Скелет", "Гоблин", "Орк", "Вампир", "Дракон" };
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
-            double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth + 1);
-            double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage + 1);
+            double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth);
+            double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage);
             return new Enemy(randomEnemyType, enemyHealth, enemyDamage);
         }
 
         private void FightEnemy(Enemy enemy)
         {
             Console.WriteLine($"Вы столкнулись с врагом {enemy.Type} HP[{enemy.Health}]");
-
             while (true)
             {
-                hero.Attack(enemy);
+                Attack(enemy);
                 if (enemy.Health <= 0)
                 {
                     Console.WriteLine("Вы победили врага!");
                     return;
                 }
-                enemy.Attack(hero);
+
+                Attack(hero, enemy);
                 if (hero.Health <= 0)
                 {
                     Console.WriteLine("Вы проиграли!");
@@ -83,30 +79,59 @@ namespace Dungeon_Heroes.Game
             }
         }
 
+        private void Attack(Enemy enemy)
+        {
+            Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
+
+            int option = shop.GetOption(hero.Skills.Count);
+            if (option == shop.Skills.Count + 1) return;
+
+            hero.Skills[option - 1].UseSkill(hero);
+
+            double damage = hero.Weapon.Damage;
+            enemy.Health -= damage;
+            Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
+
+            hero.Skills[option - 1].StopSkill(hero);
+        }
+
+        private void Attack(Hero hero, Enemy enemy)
+        {
+            int idx = random.Next(enemy.Skills.Length);
+            enemy.Skills[idx].UseSkill(enemy);
+            Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+
+            double damage = enemy.Damage;
+            hero.Health -= damage;
+            Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+
+            enemy.Skills[idx].StopSkill(enemy);
+        }
+
         private void RestoreHealthOrMana()
         {
-            Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы!");
-            Console.WriteLine("Что вы хотите восстановить?\n1. Здоровье\n2. Магическую силу");
+            Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы");
+            Console.WriteLine("Что восстановить?\n1. Здоровье\n2. Магическую силу");
 
             switch (Console.ReadLine())
             {
                 case "1":
                     hero.Health = Math.Min(hero.Health + random.Next(20, 50), 100);
-                    Console.WriteLine($"Ваше здоровье восстановлено. Здоровье: {hero.Health}");
+                    Console.WriteLine($"Здоровье восстановлено. HP[{hero.Health}/100]");
                     break;
                 case "2":
                     hero.Mana = Math.Min(hero.Mana + random.Next(20, 50), 100);
-                    Console.WriteLine($"Ваша магическая сила восстановлена. Мана: {hero.Mana}");
+                    Console.WriteLine($"Мана восстановлена. MP[{hero.Mana}/100]");
                     break;
                 default:
-                    Console.WriteLine("Неправильный выбор! Пожалуйста, выберите 1 или 2.");
+                    Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
                     break;
             }
         }
 
         private void Escape()
         {
-            Console.WriteLine("Вы успешно сбежали из подземелья в хаб.");
+            Console.WriteLine("Вы сбежали из подземелья");
             hero.Health = 100;
             hero.Mana = 100;
         }
