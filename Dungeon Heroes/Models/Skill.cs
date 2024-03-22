@@ -6,11 +6,13 @@ namespace Dungeon_Heroes.Models
     {
         public string Name { get; }
         public int Price { get; }
+        internal double Mana {  get; }
 
-        internal Skill(string name, int price)
+        internal Skill(string name, int price, double mana)
         {
             Name = name;
             Price = price;
+            Mana = mana;
         }
 
         internal virtual void UseSkill(Hero hero) { }
@@ -19,6 +21,6 @@ namespace Dungeon_Heroes.Models
         internal virtual void UseSkill(Enemy enemy) { }
         internal virtual void StopSkill(Enemy enemy) { }
 
-        public override string ToString() { return $"{Name}"; }
+        public override string ToString() { return $"{Name} MP[{Mana}]"; }
     }
 }

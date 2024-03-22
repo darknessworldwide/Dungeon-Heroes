@@ -54,9 +54,9 @@ namespace Dungeon_Heroes.Game
 
             Skills = new List<Skill>
             {
-                new SteelShield("Стальной щит", 1),
-                new Healing("Исцеление", 1),
-                new Rage("Ярость", 1),
+                new SteelShield("Стальной щит", 1, 30, 1.5),
+                new Healing("Исцеление", 1, 20, 30),
+                new Rage("Ярость", 1, 30, 1.5),
             };
 
             DungeonLevels = new List<DungeonLevel>

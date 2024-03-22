@@ -60,17 +60,40 @@ namespace Dungeon_Heroes.Game
 
         private void FightEnemy(Enemy enemy)
         {
-            Console.WriteLine($"Вы столкнулись с врагом {enemy.Type} HP[{enemy.Health}]");
+            Console.WriteLine($"Вы столкнулись с врагом {enemy}");
+            double damage;
+
             while (true)
             {
-                Attack(enemy);
+                Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
+                int option = shop.GetOption(hero.Skills.Count); // лишний +1 = краш
+                hero.Skills[option - 1].UseSkill(hero);
+
+                damage = hero.Weapon.Damage;
+                enemy.Health -= damage;
+                Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
+
+                Console.WriteLine(hero);
+
                 if (enemy.Health <= 0)
                 {
                     Console.WriteLine("Вы победили врага!");
                     return;
                 }
 
-                Attack(hero, enemy);
+                int idx = random.Next(enemy.Skills.Length);
+                enemy.Skills[idx].UseSkill(enemy);
+                Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+
+                damage = Math.Round(enemy.Damage / hero.Armor.Defense);
+                hero.Health -= damage;
+                Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+
+                Console.WriteLine(enemy);
+
+                hero.Skills[option - 1].StopSkill(hero);
+                enemy.Skills[idx].StopSkill(enemy); // если он юзает стальной щит, то он ему он никак не поможет)
+
                 if (hero.Health <= 0)
                 {
                     Console.WriteLine("Вы проиграли!");
@@ -79,34 +102,38 @@ namespace Dungeon_Heroes.Game
             }
         }
 
-        private void Attack(Enemy enemy)
-        {
-            Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
+        //private void Attack(Enemy enemy)
+        //{
+        //    Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
 
-            int option = shop.GetOption(hero.Skills.Count);
-            if (option == shop.Skills.Count + 1) return;
+        //    int option = shop.GetOption(hero.Skills.Count);
+        //    if (option == shop.Skills.Count + 1) return;
 
-            hero.Skills[option - 1].UseSkill(hero);
+        //    hero.Skills[option - 1].UseSkill(hero);
 
-            double damage = hero.Weapon.Damage;
-            enemy.Health -= damage;
-            Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
+        //    double damage = hero.Weapon.Damage;
+        //    enemy.Health -= damage;
+        //    Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
 
-            hero.Skills[option - 1].StopSkill(hero);
-        }
+        //    hero.Skills[option - 1].StopSkill(hero);
 
-        private void Attack(Hero hero, Enemy enemy)
-        {
-            int idx = random.Next(enemy.Skills.Length);
-            enemy.Skills[idx].UseSkill(enemy);
-            Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+        //    Console.WriteLine(hero);
+        //}
 
-            double damage = enemy.Damage;
-            hero.Health -= damage;
-            Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+        //private void Attack(Hero hero, Enemy enemy)
+        //{
+        //    int idx = random.Next(enemy.Skills.Length);
+        //    enemy.Skills[idx].UseSkill(enemy);
+        //    Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
 
-            enemy.Skills[idx].StopSkill(enemy);
-        }
+        //    double damage = enemy.Damage;
+        //    hero.Health -= damage;
+        //    Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+
+        //    enemy.Skills[idx].StopSkill(enemy);
+
+        //    Console.WriteLine(enemy);
+        //}
 
         private void RestoreHealthOrMana()
         {
