@@ -13,6 +13,11 @@ namespace Dungeon_Heroes.Skills
             this.buff = buff;
         }
 
+        internal Rage(string name, double buff) : base(name)
+        {
+            this.buff = buff;
+        }
+
         internal override void UseSkill(Hero hero)
         {
             defaultValue = hero.Weapon.Damage;

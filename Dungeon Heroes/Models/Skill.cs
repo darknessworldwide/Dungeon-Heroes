@@ -15,6 +15,11 @@ namespace Dungeon_Heroes.Models
             Mana = mana;
         }
 
+        internal Skill(string name)
+        {
+            Name = name;
+        }
+
         internal virtual void UseSkill(Hero hero) { }
         internal virtual void StopSkill(Hero hero) { }
 

@@ -12,6 +12,11 @@ namespace Dungeon_Heroes.Skills
             this.healthPoints = healthPoints;
         }
 
+        internal Healing(string name, double healthPoints) : base(name)
+        {
+            this.healthPoints = healthPoints;
+        }
+
         internal override void UseSkill(Hero hero)
         {
             hero.Health += healthPoints;

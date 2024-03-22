@@ -20,9 +20,9 @@ namespace Dungeon_Heroes.Models
 
             Skills = new Skill[]
             {
-                new SteelShield("Стальной щит", 0, 0, 1.3),
-                new Healing("Исцеление", 0, 0, 20),
-                new Rage("Ярость", 0, 0, 1.3),
+                new SteelShield("Стальной щит", 1.3),
+                new Healing("Исцеление", 20),
+                new Rage("Ярость", 1.3),
             };
         }
 
