@@ -55,14 +55,17 @@ namespace Dungeon_Heroes.Game
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
             double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth);
             double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage);
-            return new Enemy(randomEnemyType, enemyHealth, enemyDamage);
+            double enemyDefense = random.Next((int)dungeonLevel.MinEnemyDefense, (int)dungeonLevel.MaxEnemyDefense); // не ебу почему нельзя тут поделить на 10
+
+            return new Enemy(randomEnemyType, enemyHealth, enemyDefense / 10, enemyDamage);
         }
 
         private void FightEnemy(Enemy enemy)
         {
             Console.WriteLine($"Вы столкнулись с врагом {enemy}");
             double damage;
-
+            int idx = 0;
+            bool flag = false;
             while (true)
             {
                 Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
@@ -75,15 +78,22 @@ namespace Dungeon_Heroes.Game
 
                 Console.WriteLine(hero);
 
+                if (flag)
+                {
+                    enemy.Skills[idx].StopSkill(enemy);
+                    flag = false;
+                }
+
                 if (enemy.Health <= 0)
                 {
                     Console.WriteLine("Вы победили врага!");
                     return;
                 }
 
-                int idx = random.Next(enemy.Skills.Length);
+                idx = random.Next(enemy.Skills.Length);
                 enemy.Skills[idx].UseSkill(enemy);
                 Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+                flag = true;
 
                 damage = Math.Round(enemy.Damage / hero.Armor.Defense);
                 hero.Health -= damage;
@@ -92,7 +102,6 @@ namespace Dungeon_Heroes.Game
                 Console.WriteLine(enemy);
 
                 hero.Skills[option - 1].StopSkill(hero);
-                enemy.Skills[idx].StopSkill(enemy); // если он юзает стальной щит, то он ему он никак не поможет)
 
                 if (hero.Health <= 0)
                 {

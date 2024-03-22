@@ -61,9 +61,9 @@ namespace Dungeon_Heroes.Game
 
             DungeonLevels = new List<DungeonLevel>
             {
-                new DungeonLevel("Лёгкий", 5, 9, 50, 101, 10, 21, 0.2),
-                new DungeonLevel("Средний", 8, 13, 100, 151, 20, 31, 0.15),
-                new DungeonLevel("Сложный", 12, 16, 150, 201, 30, 41, 0.1),
+                new DungeonLevel("Лёгкий", 5, 9, 50, 101, 10, 21, 5, 10, 0.2),
+                new DungeonLevel("Средний", 8, 13, 100, 151, 20, 31, 10, 15, 0.15),
+                new DungeonLevel("Сложный", 12, 16, 150, 201, 30, 41, 15, 20, 0.1),
             };
         }
 

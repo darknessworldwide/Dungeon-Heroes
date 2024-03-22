@@ -6,14 +6,15 @@ namespace Dungeon_Heroes.Models
     {
         internal string Type { get; }
         internal double Health { get; set; }
+        internal double Defense { get; set; }
         internal double Damage { get; set; }
-
         internal Skill[] Skills { get; }
 
-        internal Enemy(string type, double health, double damage)
+        internal Enemy(string type, double health, double defence, double damage)
         {
             Type = type;
             Health = health;
+            Defense = defence;
             Damage = damage;
 
             Skills = new Skill[]
@@ -24,6 +25,6 @@ namespace Dungeon_Heroes.Models
             };
         }
 
-        public override string ToString() { return $"{Type} HP[{Health}] DMG[{Damage}]"; }
+        public override string ToString() { return $"{Type} HP[{Health}] DEF[{Defense}] DMG[{Damage}]"; }
     }
 }

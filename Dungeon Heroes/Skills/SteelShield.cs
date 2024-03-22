@@ -6,7 +6,8 @@ namespace Dungeon_Heroes.Skills
     internal class SteelShield : Skill
     {
         private double buff;
-        private double defaultValue;
+        private double defaultValueHero;
+        private double defaultValueEnemy;
 
         internal SteelShield(string name, int price, double mana, double buff) : base(name, price, mana)
         {
@@ -20,7 +21,7 @@ namespace Dungeon_Heroes.Skills
 
         internal override void UseSkill(Hero hero)
         {
-            defaultValue = hero.Armor.Defense;
+            defaultValueHero = hero.Armor.Defense;
 
             hero.Armor.Defense *= buff;
             hero.Mana -= Mana;
@@ -29,19 +30,19 @@ namespace Dungeon_Heroes.Skills
 
         internal override void StopSkill(Hero hero)
         {
-            hero.Armor.Defense = defaultValue;
+            hero.Armor.Defense = defaultValueHero;
         }
 
         internal override void UseSkill(Enemy enemy)
         {
-            defaultValue = enemy.Health;
+            defaultValueEnemy = enemy.Defense;
 
-            enemy.Health *= buff;
+            enemy.Defense *= buff;
         }
 
         internal override void StopSkill(Enemy enemy)
         {
-            enemy.Health = defaultValue;
+            enemy.Defense = defaultValueEnemy;
         }
     }
 }
