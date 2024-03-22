@@ -2,7 +2,7 @@
 {
     internal class DungeonLevel
     {
-        private string Difficulty { get; }
+        private string difficulty;
         internal int MinRooms { get; }
         internal int MaxRooms { get; }
         internal double MinEnemyHealth { get; }
@@ -13,7 +13,7 @@
 
         internal DungeonLevel(string difficulty, int minRooms, int maxRooms, double minEnemyHealth, double maxEnemyHealth, double minEnemyDamage, double maxEnemyDamage, double treasureChance)
         {
-            Difficulty = difficulty;
+            this.difficulty = difficulty;
             MinRooms = minRooms;
             MaxRooms = maxRooms;
             MinEnemyHealth = minEnemyHealth;
@@ -23,6 +23,6 @@
             TreasureChance = treasureChance;
         }
 
-        public override string ToString() { return Difficulty; }
+        public override string ToString() { return difficulty; }
     }
 }

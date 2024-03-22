@@ -66,7 +66,7 @@ namespace Dungeon_Heroes.Game
             while (true)
             {
                 Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
-                int option = shop.GetOption(hero.Skills.Count); // лишний +1 = краш
+                int option = shop.GetOption(hero.Skills.Count - 1);
                 hero.Skills[option - 1].UseSkill(hero);
 
                 damage = hero.Weapon.Damage;

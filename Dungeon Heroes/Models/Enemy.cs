@@ -1,6 +1,4 @@
 ﻿using Dungeon_Heroes.Skills;
-using System.Security.Policy;
-using System.Xml.Linq;
 
 namespace Dungeon_Heroes.Models
 {
