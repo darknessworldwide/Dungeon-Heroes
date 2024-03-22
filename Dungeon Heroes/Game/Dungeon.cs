@@ -17,23 +17,30 @@ namespace Dungeon_Heroes.Game
             this.shop = shop;
         }
 
+        internal enum RoomType
+        {
+            EnemyRoom,
+            TreasureRoom,
+            RestoreRoom
+        }
+
         internal void ExploreDungeon()
         {
             int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms);
             for (int i = 0; i < numberOfRooms; i++)
             {
-                int roomType = random.Next(3);
+                RoomType roomType = (RoomType)random.Next(3);
                 switch (roomType)
                 {
-                    case 0:
+                    case RoomType.EnemyRoom:
                         Enemy enemy = GenerateRandomEnemy();
                         FightEnemy(enemy);
                         break;
-                    case 1:
+                    case RoomType.TreasureRoom:
                         Console.WriteLine("Вы нашли комнату с сокровищем!");
                         hero.Money += random.Next(50, 200);
                         break;
-                    case 2:
+                    case RoomType.RestoreRoom:
                         RestoreHealthOrMana();
                         break;
                 }
@@ -161,6 +168,7 @@ namespace Dungeon_Heroes.Game
                     break;
                 default:
                     Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
+                    RestoreHealthOrMana();
                     break;
             }
         }
