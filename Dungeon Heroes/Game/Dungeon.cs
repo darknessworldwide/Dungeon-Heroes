@@ -71,19 +71,23 @@ namespace Dungeon_Heroes.Game
         {
             Console.WriteLine($"Вы столкнулись с врагом {enemy}");
             double damage;
-            int idx = 0;
+            int option = 0; // любое значение
+            int idx = 0; // любое значение
             bool flag = false;
+            bool flag2 = false;
+
             while (true)
             {
-                Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
-                int option = shop.GetOption(hero.Skills.Count - 1);
-                hero.Skills[option - 1].UseSkill(hero);
+                if (hero.SkillSelection())
+                {
+                    option = shop.GetOption(hero.AvailableSkills.Count - 1);
+                    hero.Skills[option - 1].UseSkill(hero);
+                    flag2 = true;
+                }
 
                 damage = hero.Weapon.Damage;
                 enemy.Health -= damage;
-                Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
-
-                Console.WriteLine(hero);
+                Console.WriteLine($"{hero.Name} наносит {damage} DMG {enemy.Type}\n{enemy}");
 
                 if (flag)
                 {
@@ -99,16 +103,18 @@ namespace Dungeon_Heroes.Game
 
                 idx = random.Next(enemy.Skills.Length);
                 enemy.Skills[idx].UseSkill(enemy);
-                Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
                 flag = true;
+                Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
 
                 damage = Math.Round(enemy.Damage / hero.Armor.Defense);
                 hero.Health -= damage;
                 Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
 
-                Console.WriteLine(enemy);
-
-                hero.Skills[option - 1].StopSkill(hero);
+                if (flag2)
+                {
+                    hero.Skills[option - 1].StopSkill(hero);
+                    flag2 = false;
+                }
 
                 if (hero.Health <= 0)
                 {
@@ -117,39 +123,6 @@ namespace Dungeon_Heroes.Game
                 }
             }
         }
-
-        //private void Attack(Enemy enemy)
-        //{
-        //    Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
-
-        //    int option = shop.GetOption(hero.Skills.Count);
-        //    if (option == shop.Skills.Count + 1) return;
-
-        //    hero.Skills[option - 1].UseSkill(hero);
-
-        //    double damage = hero.Weapon.Damage;
-        //    enemy.Health -= damage;
-        //    Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
-
-        //    hero.Skills[option - 1].StopSkill(hero);
-
-        //    Console.WriteLine(hero);
-        //}
-
-        //private void Attack(Hero hero, Enemy enemy)
-        //{
-        //    int idx = random.Next(enemy.Skills.Length);
-        //    enemy.Skills[idx].UseSkill(enemy);
-        //    Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
-
-        //    double damage = enemy.Damage;
-        //    hero.Health -= damage;
-        //    Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
-
-        //    enemy.Skills[idx].StopSkill(enemy);
-
-        //    Console.WriteLine(enemy);
-        //}
 
         private void RestoreHealthOrMana()
         {
