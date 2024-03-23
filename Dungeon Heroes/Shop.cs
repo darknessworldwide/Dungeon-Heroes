@@ -8,9 +8,9 @@ namespace Dungeon_Heroes
         internal List<Armor> Armors { get; set; }
         internal List<Weapon> Weapons { get; set; }
         internal List<Skill> Skills { get; set; }
-        internal List<DungeonLevel> DungeonLevels { get; }
+        internal DungeonLevel[] DungeonLevels { get; }
 
-        internal Shop() // отредачить
+        internal Shop()
         {
             Armors = new List<Armor>
             {
@@ -55,11 +55,11 @@ namespace Dungeon_Heroes
                 new Rage("Ярость", 1, 30, 1.5),
             };
 
-            DungeonLevels = new List<DungeonLevel>
+            DungeonLevels = new DungeonLevel[]
             {
-                new DungeonLevel("Лёгкий", 5, 9, 50, 101, 10, 21, 5, 10, 0.2),
-                new DungeonLevel("Средний", 8, 13, 100, 151, 20, 31, 10, 15, 0.15),
-                new DungeonLevel("Сложный", 12, 16, 150, 201, 30, 41, 15, 20, 0.1),
+                new DungeonLevel("Легкий", 5, 8, 50, 100, 10, 20, 0.5, 1, 0.2),
+                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 1, 1.5, 0.15),
+                new DungeonLevel("Сложный", 12, 16, 150, 200, 30, 40, 1.5, 2, 0.1),
             };
         }
 
@@ -99,7 +99,11 @@ namespace Dungeon_Heroes
 
         internal void ShowDungeonLevels()
         {
-            ShowList(DungeonLevels);
+            for (int i = 0; i < DungeonLevels.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {DungeonLevels[i]}");
+            }
+            Console.WriteLine($"{DungeonLevels.Length + 1}. Назад");
         }
     }
 }

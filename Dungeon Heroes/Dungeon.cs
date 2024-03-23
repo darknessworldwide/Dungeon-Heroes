@@ -59,11 +59,11 @@ namespace Dungeon_Heroes
         {
             string[] enemyTypes = { "Скелет", "Гоблин", "Орк", "Вампир", "Дракон" };
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
-            double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth);
-            double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage);
-            double enemyDefense = random.Next((int)dungeonLevel.MinEnemyDefense, (int)dungeonLevel.MaxEnemyDefense); // не ебу почему нельзя тут поделить на 10
+            double enemyHealth = random.Next(dungeonLevel.MinEnemyHealth, dungeonLevel.MaxEnemyHealth);
+            double enemyDamage = random.Next(dungeonLevel.MinEnemyDamage, dungeonLevel.MaxEnemyDamage);
+            double enemyDefense = Math.Round(random.NextDouble() * (dungeonLevel.MaxEnemyDefense - dungeonLevel.MinEnemyDefense) + dungeonLevel.MinEnemyDefense, 1);
 
-            return new Enemy(randomEnemyType, enemyHealth, enemyDefense / 10, enemyDamage);
+            return new Enemy(randomEnemyType, enemyHealth, enemyDefense, enemyDamage);
         }
 
         private void FightEnemy(Enemy enemy)

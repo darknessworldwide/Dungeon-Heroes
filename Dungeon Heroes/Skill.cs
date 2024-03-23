@@ -3,14 +3,14 @@
     internal class Skill : IItem
     {
         public string Name { get; }
+        internal int Mana { get; }
         public int Price { get; }
-        internal double Mana {  get; }
 
-        internal Skill(string name, int price, double mana)
+        internal Skill(string name, int mana, int price)
         {
             Name = name;
-            Price = price;
             Mana = mana;
+            Price = price;
         }
 
         internal Skill(string name)

@@ -123,8 +123,8 @@ namespace Dungeon_Heroes
             Console.WriteLine("Выберите уровень сложности подземелья:");
             shop.ShowDungeonLevels();
 
-            int option = shop.GetOption(shop.DungeonLevels.Count);
-            if (option == shop.DungeonLevels.Count + 1) return;
+            int option = shop.GetOption(shop.DungeonLevels.Length);
+            if (option == shop.DungeonLevels.Length + 1) return;
 
             EnterDungeon(shop.DungeonLevels[option - 1]);
         }

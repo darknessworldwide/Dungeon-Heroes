@@ -5,15 +5,15 @@
         private string difficulty;
         internal int MinRooms { get; }
         internal int MaxRooms { get; }
-        internal double MinEnemyHealth { get; }
-        internal double MaxEnemyHealth { get; }
-        internal double MinEnemyDamage { get; }
-        internal double MaxEnemyDamage { get; }
+        internal int MinEnemyHealth { get; }
+        internal int MaxEnemyHealth { get; }
+        internal int MinEnemyDamage { get; }
+        internal int MaxEnemyDamage { get; }
         internal double MinEnemyDefense { get; }
         internal double MaxEnemyDefense { get; }
-        internal double TreasureChance { get; }
+        internal double TreasureChance { get; } // не реализовано
 
-        internal DungeonLevel(string difficulty, int minRooms, int maxRooms, double minEnemyHealth, double maxEnemyHealth, double minEnemyDamage, double maxEnemyDamage, double minEnemyDefense, double maxEnemyDefense, double treasureChance)
+        internal DungeonLevel(string difficulty, int minRooms, int maxRooms, int minEnemyHealth, int maxEnemyHealth, int minEnemyDamage, int maxEnemyDamage, double minEnemyDefense, double maxEnemyDefense, double treasureChance)
         {
             this.difficulty = difficulty;
             MinRooms = minRooms;

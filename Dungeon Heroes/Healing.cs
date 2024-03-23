@@ -4,14 +4,14 @@ namespace Dungeon_Heroes
 {
     internal class Healing : Skill
     {
-        private double healthPoints;
+        private int healthPoints;
 
-        internal Healing(string name, int price, double mana, double healthPoints) : base(name, price, mana)
+        internal Healing(string name, int mana, int price, int healthPoints) : base(name, mana, price)
         {
             this.healthPoints = healthPoints;
         }
 
-        internal Healing(string name, double healthPoints) : base(name)
+        internal Healing(string name, int healthPoints) : base(name)
         {
             this.healthPoints = healthPoints;
         }
