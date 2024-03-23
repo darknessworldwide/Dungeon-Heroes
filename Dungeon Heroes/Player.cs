@@ -1,8 +1,6 @@
-﻿using Dungeon_Heroes.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Player
     {

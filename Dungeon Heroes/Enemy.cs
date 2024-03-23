@@ -1,6 +1,4 @@
-﻿using Dungeon_Heroes.Skills;
-
-namespace Dungeon_Heroes.Models
+﻿namespace Dungeon_Heroes
 {
     internal class Enemy
     {

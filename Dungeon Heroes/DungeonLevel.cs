@@ -1,4 +1,4 @@
-﻿namespace Dungeon_Heroes.Game
+﻿namespace Dungeon_Heroes
 {
     internal class DungeonLevel
     {

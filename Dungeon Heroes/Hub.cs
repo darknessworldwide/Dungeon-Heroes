@@ -1,8 +1,6 @@
-﻿using Dungeon_Heroes.Models;
-using Dungeon_Heroes.ItemInterfaces;
-using System;
+﻿using System;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Hub
     {

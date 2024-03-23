@@ -1,9 +1,7 @@
-﻿using Dungeon_Heroes.Models;
-using Dungeon_Heroes.Skills;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Shop
     {

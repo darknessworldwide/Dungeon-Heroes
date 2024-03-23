@@ -1,7 +1,6 @@
-﻿using Dungeon_Heroes.Models;
-using System;
+﻿using System;
 
-namespace Dungeon_Heroes.Skills
+namespace Dungeon_Heroes
 {
     internal class Rage : Skill
     {

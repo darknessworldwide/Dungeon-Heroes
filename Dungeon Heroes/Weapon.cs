@@ -1,6 +1,4 @@
-﻿using Dungeon_Heroes.ItemInterfaces;
-
-namespace Dungeon_Heroes.Models
+﻿namespace Dungeon_Heroes
 {
     internal class Weapon : IItem
     {
