@@ -6,17 +6,15 @@ namespace Dungeon_Heroes.Models
     {
         public string Name { get; }
         internal double Damage { get; set; }
-        internal double Mana { get; }
         public int Price { get; }
 
-        internal Weapon(string name, double damage, double mana, int price)
+        internal Weapon(string name, double damage, int price)
         {
             Name = name;
             Damage = damage;
-            Mana = mana;
             Price = price;
         }
 
-        public override string ToString() { return $"{Name} DMG[{Damage}] MP[{Mana}]"; }
+        public override string ToString() { return $"{Name} DMG[{Damage}]"; }
     }
 }

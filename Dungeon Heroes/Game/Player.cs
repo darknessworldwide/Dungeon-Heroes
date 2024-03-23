@@ -19,7 +19,7 @@ namespace Dungeon_Heroes.Game
                 int option = shop.GetOption(shop.Skills.Count);
                 if (option == shop.Skills.Count + 1) continue;
 
-                Hero hero = new Hero(name, 100, 100, 10000, new Armor("Накидка", 1, 50), new Weapon("Зубочистка", 1, 0, 0), new List<Skill> { shop.Skills[option - 1] }); // отредачить
+                Hero hero = new Hero(name, shop.Skills[option - 1]);
                 shop.Skills.RemoveAt(option - 1);
                 return hero;
             }

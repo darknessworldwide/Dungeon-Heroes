@@ -17,23 +17,30 @@ namespace Dungeon_Heroes.Game
             this.shop = shop;
         }
 
+        internal enum RoomType
+        {
+            EnemyRoom,
+            TreasureRoom,
+            RestoreRoom
+        }
+
         internal void ExploreDungeon()
         {
             int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms);
             for (int i = 0; i < numberOfRooms; i++)
             {
-                int roomType = random.Next(3);
+                RoomType roomType = (RoomType)random.Next(3);
                 switch (roomType)
                 {
-                    case 0:
+                    case RoomType.EnemyRoom:
                         Enemy enemy = GenerateRandomEnemy();
                         FightEnemy(enemy);
                         break;
-                    case 1:
+                    case RoomType.TreasureRoom:
                         Console.WriteLine("Вы нашли комнату с сокровищем!");
                         hero.Money += random.Next(50, 200);
                         break;
-                    case 2:
+                    case RoomType.RestoreRoom:
                         RestoreHealthOrMana();
                         break;
                 }
@@ -55,57 +62,66 @@ namespace Dungeon_Heroes.Game
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
             double enemyHealth = random.Next((int)dungeonLevel.MinEnemyHealth, (int)dungeonLevel.MaxEnemyHealth);
             double enemyDamage = random.Next((int)dungeonLevel.MinEnemyDamage, (int)dungeonLevel.MaxEnemyDamage);
-            return new Enemy(randomEnemyType, enemyHealth, enemyDamage);
+            double enemyDefense = random.Next((int)dungeonLevel.MinEnemyDefense, (int)dungeonLevel.MaxEnemyDefense); // не ебу почему нельзя тут поделить на 10
+
+            return new Enemy(randomEnemyType, enemyHealth, enemyDefense / 10, enemyDamage);
         }
 
         private void FightEnemy(Enemy enemy)
         {
-            Console.WriteLine($"Вы столкнулись с врагом {enemy.Type} HP[{enemy.Health}]");
+            Console.WriteLine($"Вы столкнулись с врагом {enemy}");
+            double damage;
+            int option = 0; // любое значение
+            int idx = 0; // любое значение
+            bool flag = false;
+            bool flag2 = false;
+
             while (true)
             {
-                Attack(enemy);
+                if (hero.SkillSelection())
+                {
+                    option = shop.GetOption(hero.AvailableSkills.Count - 1);
+                    hero.Skills[option - 1].UseSkill(hero);
+                    flag2 = true;
+                }
+
+                damage = hero.Weapon.Damage;
+                enemy.Health -= damage;
+                Console.WriteLine($"{hero.Name} наносит {damage} DMG {enemy.Type}\n{enemy}");
+
+                if (flag)
+                {
+                    enemy.Skills[idx].StopSkill(enemy);
+                    flag = false;
+                }
+
                 if (enemy.Health <= 0)
                 {
                     Console.WriteLine("Вы победили врага!");
                     return;
                 }
 
-                Attack(hero, enemy);
+                idx = random.Next(enemy.Skills.Length);
+                enemy.Skills[idx].UseSkill(enemy);
+                flag = true;
+                Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+
+                damage = Math.Round(enemy.Damage / hero.Armor.Defense);
+                hero.Health -= damage;
+                Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+
+                if (flag2)
+                {
+                    hero.Skills[option - 1].StopSkill(hero);
+                    flag2 = false;
+                }
+
                 if (hero.Health <= 0)
                 {
                     Console.WriteLine("Вы проиграли!");
                     return;
                 }
             }
-        }
-
-        private void Attack(Enemy enemy)
-        {
-            Console.WriteLine($"Выберите умение из списка:\n{hero.GetMySkills()}");
-
-            int option = shop.GetOption(hero.Skills.Count);
-            if (option == shop.Skills.Count + 1) return;
-
-            hero.Skills[option - 1].UseSkill(hero);
-
-            double damage = hero.Weapon.Damage;
-            enemy.Health -= damage;
-            Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}. {enemy.Type} HP[{enemy.Health}]");
-
-            hero.Skills[option - 1].StopSkill(hero);
-        }
-
-        private void Attack(Hero hero, Enemy enemy)
-        {
-            int idx = random.Next(enemy.Skills.Length);
-            enemy.Skills[idx].UseSkill(enemy);
-            Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
-
-            double damage = enemy.Damage;
-            hero.Health -= damage;
-            Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
-
-            enemy.Skills[idx].StopSkill(enemy);
         }
 
         private void RestoreHealthOrMana()
@@ -125,6 +141,7 @@ namespace Dungeon_Heroes.Game
                     break;
                 default:
                     Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
+                    RestoreHealthOrMana();
                     break;
             }
         }

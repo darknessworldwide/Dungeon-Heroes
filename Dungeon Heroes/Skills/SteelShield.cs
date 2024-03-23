@@ -5,37 +5,44 @@ namespace Dungeon_Heroes.Skills
 {
     internal class SteelShield : Skill
     {
-        double defaultValue;
+        private double buff;
+        private double defaultValueHero;
+        private double defaultValueEnemy;
 
-        internal SteelShield(string name, int price) : base(name, price) { }
+        internal SteelShield(string name, int price, double mana, double buff) : base(name, price, mana)
+        {
+            this.buff = buff;
+        }
+
+        internal SteelShield(string name, double buff) : base(name)
+        {
+            this.buff = buff;
+        }
 
         internal override void UseSkill(Hero hero)
         {
-            defaultValue = hero.Armor.Defense;
+            defaultValueHero = hero.Armor.Defense;
 
-            double buff = 1.2;
-            int mana = 30;
             hero.Armor.Defense *= buff;
-            hero.Mana -= mana;
-            Console.WriteLine($"DEF +{(buff - 1) * 100}% -{mana}MP");
+            hero.Mana -= Mana;
+            Console.WriteLine($"DEF +{(buff - 1) * 100}% -{Mana}MP");
         }
 
         internal override void StopSkill(Hero hero)
         {
-            hero.Armor.Defense = defaultValue;
+            hero.Armor.Defense = defaultValueHero;
         }
 
         internal override void UseSkill(Enemy enemy)
         {
-            defaultValue = enemy.Health;
+            defaultValueEnemy = enemy.Defense;
 
-            double buff = 1.1;
-            enemy.Health *= buff;
+            enemy.Defense *= buff;
         }
 
         internal override void StopSkill(Enemy enemy)
         {
-            enemy.Health = defaultValue;
+            enemy.Defense = defaultValueEnemy;
         }
     }
 }

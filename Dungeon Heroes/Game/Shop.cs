@@ -33,37 +33,35 @@ namespace Dungeon_Heroes.Game
 
             Weapons = new List<Weapon>
             {
-                new Weapon("Огненная сфера", 1, 1, 1),
-                new Weapon("Веер пламени", 1, 1, 1),
-                new Weapon("Огненный кнут", 1, 1, 1),
-                new Weapon("Мощный поджог", 1, 1, 1),
-                new Weapon("Разрывной огненный шар", 1, 1, 1),
-
-                new Weapon("Громовое копьё", 1, 1, 1),
-                new Weapon("Божественные столпы света", 1, 1, 1),
-                new Weapon("Клинок тёмной Луны", 1, 1, 1),
-                new Weapon("Громовая стрела", 1, 1, 1),
-                new Weapon("Коса охоты на жизнь", 1, 1, 1),
-
-                new Weapon("Стрела души", 1, 1, 1),
-                new Weapon("Град кристаллов", 1, 1, 1),
-                new Weapon("Кристаллическое копьё души", 1, 1, 1),
-                new Weapon("Двуручный меч душ", 1, 1, 1),
-                new Weapon("Кристаллический наводящийся сгусток души", 1, 1, 1),
+                new Weapon("Старый кинжал", 25, 50),
+                new Weapon("Ржавый клинок", 30, 60),
+                new Weapon("Стальной меч", 35, 70),
+                new Weapon("Копье", 40, 80),
+                new Weapon("Железный боевой топор", 45, 90),
+                new Weapon("Двуручный меч", 65, 120),
+                new Weapon("Рапира", 70, 130),
+                new Weapon("Клеймор", 75, 140),
+                new Weapon("Палица", 80, 150),
+                new Weapon("Алебарда", 90, 160),
+                new Weapon("Пика", 95, 170),
+                new Weapon("Экскалибур", 100, 180),
+                new Weapon("Клинок тьмы", 110, 200),
+                new Weapon("Палаш Погибели", 120, 210),
+                new Weapon("Молот бога", 130, 250),
             };
 
             Skills = new List<Skill>
             {
-                new SteelShield("Стальной щит", 1),
-                new Healing("Исцеление", 1),
-                new Rage("Ярость", 1),
+                new SteelShield("Стальной щит", 1, 30, 1.5),
+                new Healing("Исцеление", 1, 20, 30),
+                new Rage("Ярость", 1, 30, 1.5),
             };
 
             DungeonLevels = new List<DungeonLevel>
             {
-                new DungeonLevel("Лёгкий", 5, 9, 50, 101, 10, 21, 0.2),
-                new DungeonLevel("Средний", 8, 13, 100, 151, 20, 31, 0.15),
-                new DungeonLevel("Сложный", 12, 16, 150, 201, 30, 41, 0.1),
+                new DungeonLevel("Лёгкий", 5, 9, 50, 101, 10, 21, 5, 10, 0.2),
+                new DungeonLevel("Средний", 8, 13, 100, 151, 20, 31, 10, 15, 0.15),
+                new DungeonLevel("Сложный", 12, 16, 150, 201, 30, 41, 15, 20, 0.1),
             };
         }
 

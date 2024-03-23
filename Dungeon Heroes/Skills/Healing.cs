@@ -5,25 +5,28 @@ namespace Dungeon_Heroes.Skills
 {
     internal class Healing : Skill
     {
-        internal Healing(string name, int price) : base(name, price) { }
+        private double healthPoints;
+
+        internal Healing(string name, int price, double mana, double healthPoints) : base(name, price, mana)
+        {
+            this.healthPoints = healthPoints;
+        }
+
+        internal Healing(string name, double healthPoints) : base(name)
+        {
+            this.healthPoints = healthPoints;
+        }
 
         internal override void UseSkill(Hero hero)
         {
-            int healthValue = 20;
-            int mana = 10;
-            hero.Health += healthValue;
-            hero.Mana -= mana;
-            Console.WriteLine($"+{healthValue}HP -{mana}MP");
+            hero.Health += healthPoints;
+            hero.Mana -= Mana;
+            Console.WriteLine($"+{healthPoints}HP -{Mana}MP");
         }
-
-        internal override void StopSkill(Hero hero) { }
 
         internal override void UseSkill(Enemy enemy)
         {
-            int healthValue = 10;
-            enemy.Health += healthValue;
+            enemy.Health += healthPoints;
         }
-
-        internal override void StopSkill(Enemy enemy) { }
     }
 }

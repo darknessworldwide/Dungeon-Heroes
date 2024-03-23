@@ -19,7 +19,7 @@ namespace Dungeon_Heroes.Game
         {
             while (true)
             {
-                Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Сменить имя\n6. Выйти из игры");
+                Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Сменить имя\n6. Персонаж\n7. Выйти из игры");
                 switch (Console.ReadLine())
                 {
                     case "1":
@@ -43,6 +43,10 @@ namespace Dungeon_Heroes.Game
                         break;
 
                     case "6":
+                        Console.WriteLine(hero);
+                        break;
+
+                    case "7":
                         return;
 
                     default:
