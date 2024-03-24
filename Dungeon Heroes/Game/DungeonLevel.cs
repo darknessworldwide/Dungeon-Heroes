@@ -1,4 +1,7 @@
-﻿namespace Dungeon_Heroes
+﻿using Dungeon_Heroes.Models;
+using System.Collections.Generic;
+
+namespace Dungeon_Heroes
 {
     internal class DungeonLevel
     {
@@ -11,6 +14,7 @@
         internal int MaxEnemyDamage { get; }
         internal double MinEnemyDefense { get; }
         internal double MaxEnemyDefense { get; }
+        internal List<RoomType> RoomTypes { get; }
         internal double TreasureChance { get; } // не реализовано
 
         internal DungeonLevel(string difficulty, int minRooms, int maxRooms, int minEnemyHealth, int maxEnemyHealth, int minEnemyDamage, int maxEnemyDamage, double minEnemyDefense, double maxEnemyDefense, double treasureChance)

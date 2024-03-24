@@ -43,22 +43,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DungeonLevel.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Shop.cs" />
-    <Compile Include="IItem.cs" />
-    <Compile Include="Armor.cs" />
-    <Compile Include="Dungeon.cs" />
-    <Compile Include="Enemy.cs" />
-    <Compile Include="Hero.cs" />
-    <Compile Include="Hub.cs" />
+    <Compile Include="Game\DungeonLevel.cs" />
+    <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\Shop.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Models\Armor.cs" />
+    <Compile Include="Game\Dungeon.cs" />
+    <Compile Include="Models\Enemy.cs" />
+    <Compile Include="Models\Hero.cs" />
+    <Compile Include="Game\Hub.cs" />
+    <Compile Include="Models\RoomType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skill.cs" />
-    <Compile Include="Healing.cs" />
-    <Compile Include="Rage.cs" />
-    <Compile Include="SteelShield.cs" />
-    <Compile Include="Weapon.cs" />
+    <Compile Include="Skills\Skill.cs" />
+    <Compile Include="Skills\Healing.cs" />
+    <Compile Include="Skills\Rage.cs" />
+    <Compile Include="Skills\SteelShield.cs" />
+    <Compile Include="Models\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

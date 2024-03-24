@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dungeon_Heroes.Models;
+using System;
 
 namespace Dungeon_Heroes
 {
@@ -14,13 +15,6 @@ namespace Dungeon_Heroes
             this.hero = hero;
             this.dungeonLevel = dungeonLevel;
             this.shop = shop;
-        }
-
-        internal enum RoomType
-        {
-            EnemyRoom,
-            TreasureRoom,
-            RestoreRoom
         }
 
         internal void ExploreDungeon()
