@@ -6,8 +6,8 @@ namespace Dungeon_Heroes
     internal class Hero
     {
         internal string Name { get; set; }
-        internal double Health { get; set; }
-        internal double Mana { get; set; }
+        internal int Health { get; set; }
+        internal int Mana { get; set; }
         internal int Money { get; set; }
         internal Armor Armor { get; set; }
         internal Weapon Weapon { get; set; }

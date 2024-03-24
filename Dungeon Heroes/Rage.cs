@@ -5,8 +5,8 @@ namespace Dungeon_Heroes
     internal class Rage : Skill
     {
         private double buff;
-        private double defaultHeroValue; // int
-        private double defaultEnemyValue; // int
+        private int defaultHeroValue;
+        private int defaultEnemyValue;
 
         internal Rage(string name, int mana, int price, double buff) : base(name, mana, price)
         {
@@ -21,7 +21,7 @@ namespace Dungeon_Heroes
         internal override void UseSkill(Hero hero)
         {
             defaultHeroValue = hero.Weapon.Damage;
-            hero.Weapon.Damage *= buff;
+            hero.Weapon.Damage = (int)Math.Round(hero.Weapon.Damage * buff);
             hero.Mana -= Mana;
             Console.WriteLine($"DMG +{(buff - 1) * 100}% -{Mana}MP");
         }
@@ -34,7 +34,7 @@ namespace Dungeon_Heroes
         internal override void UseSkill(Enemy enemy)
         {
             defaultEnemyValue = enemy.Damage;
-            enemy.Damage *= buff;
+            enemy.Damage = (int)Math.Round(enemy.Damage * buff);
         }
 
         internal override void StopSkill(Enemy enemy)

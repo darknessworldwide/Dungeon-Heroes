@@ -3,12 +3,12 @@
     internal class Enemy
     {
         internal string Type { get; }
-        internal double Health { get; set; }
+        internal int Health { get; set; }
         internal double Defense { get; set; }
-        internal double Damage { get; set; }
+        internal int Damage { get; set; }
         internal Skill[] Skills { get; }
 
-        internal Enemy(string type, double health, double defence, double damage)
+        internal Enemy(string type, int health, double defence, int damage)
         {
             Type = type;
             Health = health;

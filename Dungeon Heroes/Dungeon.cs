@@ -59,8 +59,8 @@ namespace Dungeon_Heroes
         {
             string[] enemyTypes = { "Скелет", "Гоблин", "Орк", "Вампир", "Дракон" };
             string randomEnemyType = enemyTypes[random.Next(enemyTypes.Length)];
-            double enemyHealth = random.Next(dungeonLevel.MinEnemyHealth, dungeonLevel.MaxEnemyHealth);
-            double enemyDamage = random.Next(dungeonLevel.MinEnemyDamage, dungeonLevel.MaxEnemyDamage);
+            int enemyHealth = random.Next(dungeonLevel.MinEnemyHealth, dungeonLevel.MaxEnemyHealth);
+            int enemyDamage = random.Next(dungeonLevel.MinEnemyDamage, dungeonLevel.MaxEnemyDamage);
             double enemyDefense = Math.Round(random.NextDouble() * (dungeonLevel.MaxEnemyDefense - dungeonLevel.MinEnemyDefense) + dungeonLevel.MinEnemyDefense, 1);
 
             return new Enemy(randomEnemyType, enemyHealth, enemyDefense, enemyDamage);
@@ -69,7 +69,7 @@ namespace Dungeon_Heroes
         private void FightEnemy(Enemy enemy)
         {
             Console.WriteLine($"Вы столкнулись с врагом {enemy}");
-            double damage;
+            int damage;
             int option = 0; // любое значение
             int idx = 0; // любое значение
             bool flag = false;
@@ -84,7 +84,7 @@ namespace Dungeon_Heroes
                     flag2 = true;
                 }
 
-                damage = hero.Weapon.Damage;
+                damage = (int)Math.Round(hero.Weapon.Damage / enemy.Defense);
                 enemy.Health -= damage;
                 Console.WriteLine($"{hero.Name} наносит {damage} DMG {enemy.Type}\n{enemy}");
 
@@ -105,7 +105,7 @@ namespace Dungeon_Heroes
                 flag = true;
                 Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
 
-                damage = Math.Round(enemy.Damage / hero.Armor.Defense);
+                damage = (int)Math.Round(enemy.Damage / hero.Armor.Defense);
                 hero.Health -= damage;
                 Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
 
