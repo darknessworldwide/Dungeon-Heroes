@@ -57,9 +57,9 @@ namespace Dungeon_Heroes
 
             DungeonLevels = new DungeonLevel[]
             {
-                new DungeonLevel("Легкий", 5, 8, 50, 100, 10, 20, 0.5, 1, 0.2),
-                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 1, 1.5, 0.15),
-                new DungeonLevel("Сложный", 12, 16, 150, 200, 30, 40, 1.5, 2, 0.1),
+                new DungeonLevel("Легкий", 5, 8, 50, 100, 10, 20, 0.5, 1, 0.5, 0.3, 0.2),
+                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 1, 1.5, 0.6, 0.2, 0.2),
+                new DungeonLevel("Сложный", 12, 16, 150, 200, 30, 40, 1.5, 2, 0.7, 0.1, 0.1),
             };
         }
 

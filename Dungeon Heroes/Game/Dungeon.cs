@@ -19,34 +19,25 @@ namespace Dungeon_Heroes
 
         internal void ExploreDungeon()
         {
-            int numberOfRooms = random.Next(dungeonLevel.MinRooms, dungeonLevel.MaxRooms);
-            for (int i = 0; i < numberOfRooms; i++)
+            foreach (RoomType roomType in dungeonLevel.Rooms)
             {
-                RoomType roomType = (RoomType)random.Next(3);
                 switch (roomType)
                 {
                     case RoomType.EnemyRoom:
-                        Enemy enemy = GenerateRandomEnemy();
-                        FightEnemy(enemy);
+                        FightEnemy();
                         break;
                     case RoomType.TreasureRoom:
-                        Console.WriteLine("Вы нашли комнату с сокровищем!");
-                        hero.Money += random.Next(50, 200);
+                        CollectTreasure();
                         break;
                     case RoomType.RestoreRoom:
                         RestoreHealthOrMana();
                         break;
                 }
 
-                Console.WriteLine("Вы желаете сбежать из подземелья в хаб? (да/нет)");
-                string option = Console.ReadLine();
-                if (option == "да")
-                {
-                    Escape();
-                    break;
-                }
+                if (CheckEscape()) break;
             }
             Console.WriteLine("Вы исследовали все комнаты подземелья.");
+            CollectTreasure();
         }
 
         private Enemy GenerateRandomEnemy()
@@ -60,8 +51,9 @@ namespace Dungeon_Heroes
             return new Enemy(randomEnemyType, enemyHealth, enemyDefense, enemyDamage);
         }
 
-        private void FightEnemy(Enemy enemy)
+        private void FightEnemy()
         {
+            Enemy enemy = GenerateRandomEnemy();
             Console.WriteLine($"Вы столкнулись с врагом {enemy}");
             int damage;
             int option = 0; // любое значение
@@ -117,6 +109,13 @@ namespace Dungeon_Heroes
             }
         }
 
+        private void CollectTreasure()
+        {
+            int treasureAmount = random.Next(50, 200);
+            Console.WriteLine($"Вы нашли комнату с сокровищем! Получено {treasureAmount} монет.");
+            hero.Money += treasureAmount;
+        }
+
         private void RestoreHealthOrMana()
         {
             Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы");
@@ -137,6 +136,18 @@ namespace Dungeon_Heroes
                     RestoreHealthOrMana();
                     break;
             }
+        }
+
+        private bool CheckEscape()
+        {
+            Console.WriteLine("Вы желаете сбежать из подземелья в хаб? (да/нет)");
+            string option = Console.ReadLine();
+            if (option == "да")
+            {
+                Escape();
+                return true;
+            }
+            return false;
         }
 
         private void Escape()
