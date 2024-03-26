@@ -19,9 +19,9 @@
 
             Skills = new Skill[]
             {
-                new SteelShield("Стальной щит", 1.3),
-                new Healing("Исцеление", 20),
-                new Rage("Ярость", 1.3),
+                new SteelShield("Стальной щит", 1.8),
+                new Healing("Исцеление", 30),
+                new Rage("Ярость", 2.0),
             };
         }
 
