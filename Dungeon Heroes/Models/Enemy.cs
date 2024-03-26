@@ -7,11 +7,13 @@
         internal double Defense { get; set; }
         internal int Damage { get; set; }
         internal Skill[] Skills { get; }
+        internal int defaultHealth { get; }
 
         internal Enemy(string type, int health, double defence, int damage)
         {
             Type = type;
             Health = health;
+            defaultHealth = health;
             Defense = defence;
             Damage = damage;
 

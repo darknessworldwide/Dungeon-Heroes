@@ -50,9 +50,9 @@ namespace Dungeon_Heroes
 
             Skills = new List<Skill>
             {
-                new SteelShield("Стальной щит", 1, 30, 1.5),
-                new Healing("Исцеление", 1, 20, 30),
-                new Rage("Ярость", 1, 30, 1.5),
+                new SteelShield("Стальной щит", 30, 1, 1.5),
+                new Healing("Исцеление", 20, 1, 30),
+                new Rage("Ярость", 30, 1, 1.5),
             };
 
             DungeonLevels = new DungeonLevel[]

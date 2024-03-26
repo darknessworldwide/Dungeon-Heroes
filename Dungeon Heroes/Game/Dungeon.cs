@@ -9,6 +9,7 @@ namespace Dungeon_Heroes
         private Hero hero;
         private DungeonLevel dungeonLevel;
         private Shop shop;
+        private bool dead;
 
         internal Dungeon(Hero hero, DungeonLevel dungeonLevel, Shop shop)
         {
@@ -25,6 +26,11 @@ namespace Dungeon_Heroes
                 {
                     case RoomType.EnemyRoom:
                         FightEnemy();
+                        if (dead)
+                        {
+                            Escape();
+                            return;
+                        }
                         break;
                     case RoomType.TreasureRoom:
                         CollectTreasure();
@@ -34,9 +40,9 @@ namespace Dungeon_Heroes
                         break;
                 }
 
-                if (CheckEscape()) break;
+                if (CheckEscape()) return;
             }
-            Console.WriteLine("Вы исследовали все комнаты подземелья.");
+            Console.WriteLine("Вы исследовали все комнаты подземелья");
             CollectTreasure();
         }
 
@@ -72,7 +78,7 @@ namespace Dungeon_Heroes
 
                 damage = (int)Math.Round(hero.Weapon.Damage / enemy.Defense);
                 enemy.Health -= damage;
-                Console.WriteLine($"{hero.Name} наносит {damage} DMG {enemy.Type}\n{enemy}");
+                Console.WriteLine($"{hero.Name} наносит {damage} DMG {enemy.Type}");
 
                 if (flag)
                 {
@@ -86,6 +92,8 @@ namespace Dungeon_Heroes
                     return;
                 }
 
+                Console.WriteLine($"{enemy.Type} HP[{enemy.Health}/{enemy.defaultHealth}]");
+
                 idx = random.Next(enemy.Skills.Length);
                 enemy.Skills[idx].UseSkill(enemy);
                 flag = true;
@@ -93,7 +101,7 @@ namespace Dungeon_Heroes
 
                 damage = (int)Math.Round(enemy.Damage / hero.Armor.Defense);
                 hero.Health -= damage;
-                Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}. {hero.Name} HP[{hero.Health}]");
+                Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}");
 
                 if (flag2)
                 {
@@ -103,9 +111,12 @@ namespace Dungeon_Heroes
 
                 if (hero.Health <= 0)
                 {
+                    dead = true;
                     Console.WriteLine("Вы проиграли!");
                     return;
                 }
+
+                Console.WriteLine($"{hero.Name} HP[{hero.Health}/100]");
             }
         }
 
