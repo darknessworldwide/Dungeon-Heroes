@@ -11,11 +11,13 @@ namespace Dungeon_Heroes
         internal Rage(string name, int mana, int price, double buff) : base(name, mana, price)
         {
             this.buff = buff;
+            Description = $"DMG +{(buff - 1) * 100}% -{Mana}MP";
         }
 
-        internal Rage(string name, double buff) : base(name)
+        internal Rage()
         {
-            this.buff = buff;
+            Name = "Ярость";
+            buff = 2;
         }
 
         internal override void UseSkill(Hero hero)
@@ -23,7 +25,6 @@ namespace Dungeon_Heroes
             defaultHeroValue = hero.Weapon.Damage;
             hero.Weapon.Damage = (int)Math.Round(hero.Weapon.Damage * buff);
             hero.Mana -= Mana;
-            Console.WriteLine($"DMG +{(buff - 1) * 100}% -{Mana}MP");
         }
 
         internal override void StopSkill(Hero hero)

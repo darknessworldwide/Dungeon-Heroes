@@ -4,27 +4,27 @@
     {
         internal string Type { get; }
         internal int Health { get; set; }
+        internal int DefaultHealth { get; }
         internal double Defense { get; set; }
         internal int Damage { get; set; }
         internal Skill[] Skills { get; }
-        internal int defaultHealth { get; }
 
         internal Enemy(string type, int health, double defence, int damage)
         {
             Type = type;
             Health = health;
-            defaultHealth = health;
+            DefaultHealth = health;
             Defense = defence;
             Damage = damage;
 
             Skills = new Skill[]
             {
-                new SteelShield("Стальной щит", 1.8),
-                new Healing("Исцеление", 30),
-                new Rage("Ярость", 2.0),
+                new SteelShield(),
+                new Healing(),
+                new Rage(),
             };
         }
 
-        public override string ToString() { return $"{Type} HP[{Health}] DEF[{Defense}] DMG[{Damage}]"; }
+        public override string ToString() { return $"{Type} HP[{Health}/{DefaultHealth}] DEF[{Defense}] DMG[{Damage}]"; }
     }
 }

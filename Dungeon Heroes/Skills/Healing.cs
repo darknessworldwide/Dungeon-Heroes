@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dungeon_Heroes
+﻿namespace Dungeon_Heroes
 {
     internal class Healing : Skill
     {
@@ -9,18 +7,19 @@ namespace Dungeon_Heroes
         internal Healing(string name, int mana, int price, int healthPoints) : base(name, mana, price)
         {
             this.healthPoints = healthPoints;
+            Description = $"+{healthPoints}HP -{Mana}MP";
         }
 
-        internal Healing(string name, int healthPoints) : base(name)
+        internal Healing()
         {
-            this.healthPoints = healthPoints;
+            Name = "Исцеление";
+            healthPoints = 30;
         }
 
         internal override void UseSkill(Hero hero)
         {
             hero.Health += healthPoints;
             hero.Mana -= Mana;
-            Console.WriteLine($"+{healthPoints}HP -{Mana}MP");
         }
 
         internal override void UseSkill(Enemy enemy)

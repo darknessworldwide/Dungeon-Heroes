@@ -1,4 +1,4 @@
-﻿namespace Dungeon_Heroes.Models
+﻿namespace Dungeon_Heroes
 {
     internal enum RoomType
     {

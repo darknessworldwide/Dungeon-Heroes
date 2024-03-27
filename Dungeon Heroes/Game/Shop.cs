@@ -8,10 +8,42 @@ namespace Dungeon_Heroes
         internal List<Armor> Armors { get; set; }
         internal List<Weapon> Weapons { get; set; }
         internal List<Skill> Skills { get; set; }
+        internal Skill[] StartSkills { get; }
         internal DungeonLevel[] DungeonLevels { get; }
 
         internal Shop()
         {
+            Healing healing = new Healing("Луч Исцеления", 20, 70, 30);
+            SteelShield steelShield = new SteelShield("Аура Защиты", 30, 80, 1.8);
+            Rage rage = new Rage("Гнев Титана", 30, 100, 2.0);
+
+            StartSkills = new Skill[]
+            {
+                healing,
+                steelShield,
+                rage,
+            };
+
+            Skills = new List<Skill>
+            {
+                healing,
+                new Healing("Эликсир Жизни", 30, 120, 50),
+                new Healing("Фонтан Восстановления", 40, 160, 70),
+                steelShield,
+                new SteelShield("Барьер Великана", 45, 110, 2.2),
+                new SteelShield("Щит Льва", 60, 140, 2.6),
+                rage,
+                new Rage("Ярость Дракона", 45, 130, 2.5),
+                new Rage("Пламя Феникса", 60, 160, 3.0),
+            };
+
+            DungeonLevels = new DungeonLevel[]
+            {
+                new DungeonLevel("Легкий", 5, 8, 50, 100, 10, 20, 0.5, 1, 0.5, 0.3, 0.2),
+                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 1, 1.5, 0.6, 0.2, 0.2),
+                new DungeonLevel("Сложный", 12, 16, 150, 200, 30, 40, 1.5, 2, 0.7, 0.1, 0.1),
+            };
+
             Armors = new List<Armor>
             {
                 new Armor("Простая кожаная броня", 1.1, 30),
@@ -47,47 +79,29 @@ namespace Dungeon_Heroes
                 new Weapon("Палаш Погибели", 120, 210),
                 new Weapon("Молот бога", 130, 250),
             };
-
-            Skills = new List<Skill>
-            {
-                new SteelShield("Аура Защиты", 30, 80, 1.8),
-                new SteelShield("Барьер Великана", 45, 110, 2.2),
-                new SteelShield("Щит Льва", 60, 140, 2.6),
-
-                new Healing("Луч Исцеления", 20, 70, 30),
-                new Healing("Эликсир Жизни", 30, 120, 50),
-                new Healing("Фонтан Восстановления", 40, 160, 70),
-
-                new Rage("Гнев Титана", 30, 100, 2.0),
-                new Rage("Ярость Дракона", 45, 130, 2.5),
-                new Rage("Пламя Феникса", 60, 160, 3.0),
-            };
-
-            DungeonLevels = new DungeonLevel[]
-            {
-                new DungeonLevel("Легкий", 5, 8, 50, 100, 10, 20, 0.5, 1, 0.5, 0.3, 0.2),
-                new DungeonLevel("Средний", 8, 12, 100, 150, 20, 30, 1, 1.5, 0.6, 0.2, 0.2),
-                new DungeonLevel("Сложный", 12, 16, 150, 200, 30, 40, 1.5, 2, 0.7, 0.1, 0.1),
-            };
         }
 
         internal int GetOption(int len)
         {
             int option;
-            while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > len + 1)
+            while (!int.TryParse(Console.ReadLine(), out option) || option < 0 || option > len)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
+                Console.ResetColor();
             }
             return option;
         }
 
-        private void ShowList<T>(List<T> list)
+        private void ShowList<T>(List<T> list) where T : IItem
         {
             for (int i = 0; i < list.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {list[i]}");
+                Console.WriteLine($"{i + 1}. {list[i]} Цена: {list[i].Price}");
             }
-            Console.WriteLine($"{list.Count + 1}. Назад");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("0. Назад");
+            Console.ResetColor();
         }
 
         internal void ShowArmors()
@@ -105,13 +119,26 @@ namespace Dungeon_Heroes
             ShowList(Skills);
         }
 
+        internal void ShowStartSkills()
+        {
+            for (int i = 0; i < StartSkills.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {StartSkills[i]}");
+            }
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("0. Назад");
+            Console.ResetColor();
+        }
+
         internal void ShowDungeonLevels()
         {
             for (int i = 0; i < DungeonLevels.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {DungeonLevels[i]}");
             }
-            Console.WriteLine($"{DungeonLevels.Length + 1}. Назад");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("0. Назад");
+            Console.ResetColor();
         }
     }
 }

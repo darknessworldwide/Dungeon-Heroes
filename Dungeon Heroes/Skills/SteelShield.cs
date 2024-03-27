@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Dungeon_Heroes
+﻿namespace Dungeon_Heroes
 {
     internal class SteelShield : Skill
     {
@@ -11,11 +9,13 @@ namespace Dungeon_Heroes
         internal SteelShield(string name, int mana, int price, double buff) : base(name, mana, price)
         {
             this.buff = buff;
+            Description = $"DEF +{(buff - 1) * 100}% -{Mana}MP";
         }
 
-        internal SteelShield(string name, double buff) : base(name)
+        internal SteelShield()
         {
-            this.buff = buff;
+            Name = "Стальной щит";
+            buff = 1.8;
         }
 
         internal override void UseSkill(Hero hero)
@@ -23,7 +23,6 @@ namespace Dungeon_Heroes
             defaultHeroValue = hero.Armor.Defense;
             hero.Armor.Defense *= buff;
             hero.Mana -= Mana;
-            Console.WriteLine($"DEF +{(buff - 1) * 100}% -{Mana}MP");
         }
 
         internal override void StopSkill(Hero hero)
