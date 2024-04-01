@@ -1,8 +1,6 @@
-﻿using Dungeon_Heroes.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Player
     {
@@ -13,14 +11,19 @@ namespace Dungeon_Heroes.Game
                 Console.Write("Введите имя вашего героя: ");
                 string name = Console.ReadLine();
 
+                Console.WriteLine();
+
                 Console.WriteLine("Выберите начальное умение:");
-                shop.ShowSkills();
+                shop.ShowStartSkills();
 
-                int option = shop.GetOption(shop.Skills.Count);
-                if (option == shop.Skills.Count + 1) continue;
+                int len = shop.StartSkills.Length;
+                int option = shop.GetOption(len);
+                if (option == 0) continue;
 
-                Hero hero = new Hero(name, shop.Skills[option - 1]);
-                shop.Skills.RemoveAt(option - 1);
+                Skill skill = shop.StartSkills[option - 1];
+                Hero hero = new Hero(name, skill);
+                shop.Skills.Remove(skill);
+
                 return hero;
             }
         }

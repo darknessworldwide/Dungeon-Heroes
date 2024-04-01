@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dungeon_Heroes.Models
+namespace Dungeon_Heroes
 {
     internal class Hero
     {
         internal string Name { get; set; }
-        internal double Health { get; set; }
-        internal double Mana { get; set; }
+        internal int Health { get; set; }
+        internal int Mana { get; set; }
         internal int Money { get; set; }
         internal Armor Armor { get; set; }
         internal Weapon Weapon { get; set; }
@@ -18,10 +18,10 @@ namespace Dungeon_Heroes.Models
         {
             Name = name;
             Health = 100;
-            Mana = 40;
-            Money = 10000;
-            Armor = new Armor("Накидка", 1, 50);
-            Weapon = new Weapon("Зубочистка", 10, 0);
+            Mana = 100;
+            Money = 30;
+            Armor = new Armor("Накидка", 1, 0);
+            Weapon = new Weapon("Дубинка", 15, 0);
             Skills = new List<Skill>() { skill };
         }
 
@@ -35,7 +35,7 @@ namespace Dungeon_Heroes.Models
             return text;
         }
 
-        internal bool SkillSelection()
+        internal bool ChooseASkill()
         {
             AvailableSkills = new List<Skill>();
 
@@ -49,7 +49,7 @@ namespace Dungeon_Heroes.Models
 
             if (AvailableSkills.Count > 0)
             {
-                Console.WriteLine("Выберите умение:");
+                Console.WriteLine("\nВыберите умение:");
                 for (int i = 0; i < AvailableSkills.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {AvailableSkills[i]}");

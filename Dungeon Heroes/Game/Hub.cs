@@ -1,8 +1,6 @@
-﻿using Dungeon_Heroes.Models;
-using Dungeon_Heroes.ItemInterfaces;
-using System;
+﻿using System;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Hub
     {
@@ -20,7 +18,10 @@ namespace Dungeon_Heroes.Game
             while (true)
             {
                 Console.WriteLine($"1. Доспехи\n2. Оружие\n3. Умения\n4. Выбрать подземелье\n5. Сменить имя\n6. Персонаж\n7. Выйти из игры");
-                switch (Console.ReadLine())
+                string option = Console.ReadLine();
+                Console.Clear();
+
+                switch (option)
                 {
                     case "1":
                         ChooseArmor();
@@ -86,8 +87,9 @@ namespace Dungeon_Heroes.Game
                 hero.Skills.Add((Skill)(object)item);
                 shop.Skills.Remove((Skill)(object)item);
             }
-
-            Console.WriteLine($"Приобретено {item.Name}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Приобретено {item.Name}\n");
+            Console.ResetColor();
         }
 
         private void ChooseArmor()
@@ -95,7 +97,7 @@ namespace Dungeon_Heroes.Game
             shop.ShowArmors();
 
             int option = shop.GetOption(shop.Armors.Count);
-            if (option == shop.Armors.Count + 1) return;
+            if (option == 0) return;
 
             BuyGoods(shop.Armors[option - 1]);
         }
@@ -105,7 +107,7 @@ namespace Dungeon_Heroes.Game
             shop.ShowWeapons();
 
             int option = shop.GetOption(shop.Weapons.Count);
-            if (option == shop.Weapons.Count + 1) return;
+            if (option == 0) return;
 
             BuyGoods(shop.Weapons[option - 1]);
         }
@@ -115,7 +117,7 @@ namespace Dungeon_Heroes.Game
             shop.ShowSkills();
 
             int option = shop.GetOption(shop.Skills.Count);
-            if (option == shop.Skills.Count + 1) return;
+            if (option == 0) return;
 
             BuyGoods(shop.Skills[option - 1]);
         }
@@ -125,15 +127,15 @@ namespace Dungeon_Heroes.Game
             Console.WriteLine("Выберите уровень сложности подземелья:");
             shop.ShowDungeonLevels();
 
-            int option = shop.GetOption(shop.DungeonLevels.Count);
-            if (option == shop.DungeonLevels.Count + 1) return;
+            int option = shop.GetOption(shop.DungeonLevels.Length);
+            if (option == 0) return;
 
             EnterDungeon(shop.DungeonLevels[option - 1]);
         }
 
         private void EnterDungeon(DungeonLevel dungeonLevel)
         {
-            Dungeon dungeon = new Dungeon(hero, dungeonLevel, shop);
+            Dungeon dungeon = new Dungeon(hero, dungeonLevel);
             dungeon.ExploreDungeon();
         }
 
@@ -143,7 +145,10 @@ namespace Dungeon_Heroes.Game
             string newName = Console.ReadLine();
 
             hero.Name = newName;
-            Console.WriteLine($"Имя вашего героя изменено на {newName}");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Имя вашего героя изменено на {newName}\n");
+            Console.ResetColor();
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using Dungeon_Heroes.ItemInterfaces;
-
-namespace Dungeon_Heroes.Models
+﻿namespace Dungeon_Heroes
 {
     internal class Weapon : IItem
     {
         public string Name { get; }
-        internal double Damage { get; set; }
+        internal int Damage { get; set; }
         public int Price { get; }
 
-        internal Weapon(string name, double damage, int price)
+        internal Weapon(string name, int damage, int price)
         {
             Name = name;
             Damage = damage;

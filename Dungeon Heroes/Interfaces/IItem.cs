@@ -1,4 +1,4 @@
-﻿namespace Dungeon_Heroes.ItemInterfaces
+﻿namespace Dungeon_Heroes
 {
     internal interface IItem
     {

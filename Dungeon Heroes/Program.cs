@@ -1,6 +1,4 @@
-﻿using Dungeon_Heroes.Game;
-using Dungeon_Heroes.Models;
-using System;
+﻿using System;
 
 namespace Dungeon_Heroes
 {
