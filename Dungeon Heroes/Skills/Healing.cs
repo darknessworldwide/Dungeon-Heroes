@@ -7,7 +7,7 @@
         internal Healing(string name, int mana, int price, int healthPoints) : base(name, mana, price)
         {
             this.healthPoints = healthPoints;
-            Description = $"+{healthPoints}HP -{Mana}MP";
+            description = $"+{healthPoints}HP -{Mana}MP";
         }
 
         internal Healing()

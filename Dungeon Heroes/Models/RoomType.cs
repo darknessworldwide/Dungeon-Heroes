@@ -1,9 +1,9 @@
 ﻿namespace Dungeon_Heroes
 {
-    internal enum RoomType
+    internal enum RoomTypes
     {
         EnemyRoom,
         TreasureRoom,
-        RestoreRoom
+        RecoveryRoom
     }
 }

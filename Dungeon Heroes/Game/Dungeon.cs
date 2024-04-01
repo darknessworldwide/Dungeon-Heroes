@@ -4,9 +4,10 @@ namespace Dungeon_Heroes
 {
     internal class Dungeon
     {
+        private Random random = new Random();
         private Hero hero;
         private DungeonLevel dungeonLevel;
-        private Random random = new Random();
+        private int money = 0;
         private bool dead;
 
         internal Dungeon(Hero hero, DungeonLevel dungeonLevel)
@@ -17,11 +18,11 @@ namespace Dungeon_Heroes
 
         internal void ExploreDungeon()
         {
-            foreach (RoomType roomType in dungeonLevel.Rooms)
+            foreach (RoomTypes roomType in dungeonLevel.Rooms)
             {
                 switch (roomType)
                 {
-                    case RoomType.EnemyRoom:
+                    case RoomTypes.EnemyRoom:
                         FightEnemy();
                         if (dead)
                         {
@@ -29,19 +30,21 @@ namespace Dungeon_Heroes
                             return;
                         }
                         break;
-                    case RoomType.TreasureRoom:
+
+                    case RoomTypes.TreasureRoom:
                         CollectTreasure();
                         break;
-                    case RoomType.RestoreRoom:
+
+                    case RoomTypes.RecoveryRoom:
                         RestoreHealthOrMana();
                         break;
                 }
-
                 if (CheckEscape()) return;
             }
             CollectTreasure();
+            hero.Money += money;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Вы исследовали все комнаты подземелья");
+            Console.WriteLine("\nВы исследовали все комнаты подземелья");
             Console.ResetColor();
         }
 
@@ -59,20 +62,29 @@ namespace Dungeon_Heroes
         private void FightEnemy()
         {
             Enemy enemy = GenerateRandomEnemy();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Вы столкнулись с врагом {enemy}");
+            Console.ResetColor();
+
             int damage;
-            int option = 0; // любое значение
-            int idx = 0; // любое значение
+            int index = 0; // индекс для героя, любое значение
+            int idx = 0; // индекс для врага, любое значение
             bool heroSkill = false;
             bool enemySkill = false;
 
             while (true)
             {
-                if (hero.ChooseASkill())
+                if (hero.SkillsAvailable())
                 {
-                    option = GetNoExitOption(hero.AvailableSkills.Count);
-                    hero.Skills[option - 1].UseSkill(hero);
+                    Console.WriteLine("\nВыберите доступное умение:");
+                    Console.WriteLine(hero.GetMySkills(hero.AvailableSkills));
+                    index = GetIndex(hero.AvailableSkills.Count);
+                    hero.AvailableSkills[index].UseSkill(hero);
                     heroSkill = true;
+
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine($"{hero.Name} использовал {hero.AvailableSkills[index].Name}");
+                    Console.ResetColor();
                 }
 
                 damage = (int)Math.Round(hero.Weapon.Damage / enemy.Defense);
@@ -81,6 +93,7 @@ namespace Dungeon_Heroes
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{hero.Name} наносит {damage}DMG {enemy.Type}");
                 Console.ResetColor();
+                Console.WriteLine();
 
                 if (enemySkill)
                 {
@@ -91,8 +104,14 @@ namespace Dungeon_Heroes
                 if (enemy.Health <= 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("\nВы победили врага!");
+                    Console.WriteLine("Вы победили врага!");
                     Console.ResetColor();
+
+                    if (heroSkill)
+                    {
+                        hero.AvailableSkills[index].StopSkill(hero);
+                        heroSkill = false;
+                    }
                     return;
                 }
 
@@ -101,7 +120,10 @@ namespace Dungeon_Heroes
                 idx = random.Next(enemy.Skills.Length);
                 enemy.Skills[idx].UseSkill(enemy);
                 enemySkill = true;
+
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"{enemy.Type} использовал {enemy.Skills[idx].Name}");
+                Console.ResetColor();
 
                 damage = (int)Math.Round(enemy.Damage / hero.Armor.Defense);
                 hero.Health -= damage;
@@ -109,79 +131,88 @@ namespace Dungeon_Heroes
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"{enemy.Type} наносит {damage}DMG {hero.Name}");
                 Console.ResetColor();
+                Console.WriteLine();
 
                 if (heroSkill)
                 {
-                    hero.Skills[option - 1].StopSkill(hero);
+                    hero.AvailableSkills[index].StopSkill(hero);
                     heroSkill = false;
                 }
 
                 if (hero.Health <= 0)
                 {
                     dead = true;
-
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine("\nВы проиграли!");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Вы погибли! Все найденные монеты потеряны\n");
                     Console.ResetColor();
+
+                    if (enemySkill)
+                    {
+                        enemy.Skills[idx].StopSkill(enemy);
+                        enemySkill = false;
+                    }
                     return;
                 }
 
-                Console.WriteLine($"{hero.Name} HP[{hero.Health}/100]");
+                Console.WriteLine($"{hero.Name} HP[{hero.Health}/100] MP[{hero.Mana}/100]");
             }
         }
 
         private void CollectTreasure()
         {
-            int treasureAmount = random.Next(50, 200);
+            int coins = random.Next(dungeonLevel.MinCoins, dungeonLevel.MaxCoins);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Вы нашли комнату с сокровищем! Получено {treasureAmount} монет.");
+            Console.WriteLine($"Вы нашли комнату с сокровищем! Получено {coins} монет");
             Console.ResetColor();
 
-            hero.Money += treasureAmount;
+            money += coins;
         }
 
         private void RestoreHealthOrMana()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы");
+            Console.WriteLine("Вы нашли комнату для восстановления здоровья или магической силы\n");
             Console.ResetColor();
             Console.WriteLine("Что восстановить?\n1. Здоровье\n2. Магическую силу");
 
-            switch (Console.ReadLine())
+            while (true)
             {
-                case "1":
-                    hero.Health = Math.Min(hero.Health + random.Next(20, 50), 100);
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        hero.Health = Math.Min(hero.Health + random.Next(20, 50), 100);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Здоровье восстановлено. HP[{hero.Health}/100]");
-                    Console.ResetColor();
-                    break;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"Здоровье восстановлено. HP[{hero.Health}/100]");
+                        Console.ResetColor();
+                        return;
 
-                case "2":
-                    hero.Mana = Math.Min(hero.Mana + random.Next(20, 50), 100);
+                    case "2":
+                        hero.Mana = Math.Min(hero.Mana + random.Next(20, 50), 100);
 
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"Мана восстановлена. MP[{hero.Mana}/100]");
-                    Console.ResetColor();
-                    break;
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine($"Мана восстановлена. MP[{hero.Mana}/100]");
+                        Console.ResetColor();
+                        return;
 
-                default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Такого выбора нет! Попробуйте еще раз\n");
-                    Console.ResetColor();
-
-                    RestoreHealthOrMana();
-                    break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
+                        Console.ResetColor();
+                        break;
+                }
             }
         }
 
         private bool CheckEscape()
         {
             Console.WriteLine("\nВы желаете сбежать из подземелья в хаб? (да/нет)");
-            string option = Console.ReadLine();
-            if (option == "да")
+            string input = Console.ReadLine();
+            Console.Clear();
+            if (input == "да")
             {
+                hero.Money += money;
                 Escape();
                 return true;
             }
@@ -190,21 +221,24 @@ namespace Dungeon_Heroes
 
         private void Escape()
         {
-            Console.WriteLine("\nВы сбежали из подземелья");
             hero.Health = 100;
             hero.Mana = 100;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Вы сбежали из подземелья");
+            Console.ResetColor();
         }
 
-        internal int GetNoExitOption(int len)
+        private int GetIndex(int len)
         {
             int option;
             while (!int.TryParse(Console.ReadLine(), out option) || option < 1 || option > len)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
                 Console.ResetColor();
             }
-            return option;
+            return option - 1;
         }
     }
 }

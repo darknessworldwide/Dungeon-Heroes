@@ -7,68 +7,67 @@ namespace Dungeon_Heroes
     {
         private Random random = new Random();
         private string difficulty;
-        internal int MinRooms { get; }
-        internal int MaxRooms { get; }
         internal int MinEnemyHealth { get; }
         internal int MaxEnemyHealth { get; }
         internal int MinEnemyDamage { get; }
         internal int MaxEnemyDamage { get; }
         internal double MinEnemyDefense { get; }
         internal double MaxEnemyDefense { get; }
-        internal List<RoomType> Rooms { get; }
-        internal double EnemyRoomChance { get; }
-        internal double TreasureRoomChance { get; }
-        internal double RestoreRoomChance { get; }
+        internal int MinCoins { get; }
+        internal int MaxCoins { get; }
+        private double enemyRoomChance;
+        private double treasureRoomChance;
+        private double recoveryRoomChance;
+        internal List<RoomTypes> Rooms { get; set; }
 
-        internal DungeonLevel(string difficulty, int minRooms, int maxRooms, int minEnemyHealth, int maxEnemyHealth, int minEnemyDamage, int maxEnemyDamage, double minEnemyDefense, double maxEnemyDefense, double enemyRoomChance, double treasureRoomChance, double restoreRoomChance)
+        internal DungeonLevel(string difficulty, int minRooms, int maxRooms, int minEnemyHealth, int maxEnemyHealth, int minEnemyDamage, int maxEnemyDamage, double minEnemyDefense, double maxEnemyDefense, int minCoins, int maxCoins, double enemyRoomChance, double treasureRoomChance, double recoveryRoomChance)
         {
             this.difficulty = difficulty;
-            MinRooms = minRooms;
-            MaxRooms = maxRooms;
             MinEnemyHealth = minEnemyHealth;
             MaxEnemyHealth = maxEnemyHealth;
             MinEnemyDamage = minEnemyDamage;
             MaxEnemyDamage = maxEnemyDamage;
             MinEnemyDefense = minEnemyDefense;
             MaxEnemyDefense = maxEnemyDefense;
-            EnemyRoomChance = enemyRoomChance;
-            TreasureRoomChance = treasureRoomChance;
-            RestoreRoomChance = restoreRoomChance;
+            MinCoins = minCoins;
+            MaxCoins = maxCoins;
+            this.enemyRoomChance = enemyRoomChance;
+            this.treasureRoomChance = treasureRoomChance;
+            this.recoveryRoomChance = recoveryRoomChance;
             Rooms = GenerateRooms(minRooms, maxRooms);
         }
 
-        private List<RoomType> GenerateRooms(int minRooms, int maxRooms)
+        private List<RoomTypes> GenerateRooms(int minRooms, int maxRooms)
         {
-            List<RoomType> rooms = new List<RoomType>();
-            int numberOfRooms = random.Next(minRooms, maxRooms);
+            List<RoomTypes> rooms = new List<RoomTypes>();
 
+            int numberOfRooms = random.Next(minRooms, maxRooms);
             for (int i = 0; i < numberOfRooms; i++)
             {
                 rooms.Add(GetRandomRoomType());
             }
-
             return rooms;
         }
 
-        private RoomType GetRandomRoomType()
+        private RoomTypes GetRandomRoomType()
         {
             double randomNumber = random.NextDouble();
 
-            double totalChance = EnemyRoomChance + TreasureRoomChance + RestoreRoomChance;
-            double enemyThreshold = EnemyRoomChance / totalChance;
-            double treasureThreshold = (EnemyRoomChance + TreasureRoomChance) / totalChance;
+            double totalChance = enemyRoomChance + treasureRoomChance + recoveryRoomChance;
+            double enemyThreshold = enemyRoomChance / totalChance;
+            double treasureThreshold = (enemyRoomChance + treasureRoomChance) / totalChance;
 
             if (randomNumber < enemyThreshold)
             {
-                return RoomType.EnemyRoom;
+                return RoomTypes.EnemyRoom;
             }
             else if (randomNumber < treasureThreshold)
             {
-                return RoomType.TreasureRoom;
+                return RoomTypes.TreasureRoom;
             }
             else
             {
-                return RoomType.RestoreRoom;
+                return RoomTypes.RecoveryRoom;
             }
         }
 

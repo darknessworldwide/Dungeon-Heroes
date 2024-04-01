@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Dungeon_Heroes
 {
@@ -19,23 +18,13 @@ namespace Dungeon_Heroes
             Name = name;
             Health = 100;
             Mana = 100;
-            Money = 30;
+            Money = 30000;
             Armor = new Armor("Накидка", 1, 0);
             Weapon = new Weapon("Дубинка", 15, 0);
             Skills = new List<Skill>() { skill };
         }
 
-        internal string GetMySkills()
-        {
-            string text = "";
-            for (int i = 0; i < Skills.Count; i++)
-            {
-                text += $"{i + 1}. {Skills[i]}\n";
-            }
-            return text;
-        }
-
-        internal bool ChooseASkill()
+        internal bool SkillsAvailable()
         {
             AvailableSkills = new List<Skill>();
 
@@ -49,16 +38,21 @@ namespace Dungeon_Heroes
 
             if (AvailableSkills.Count > 0)
             {
-                Console.WriteLine("\nВыберите умение:");
-                for (int i = 0; i < AvailableSkills.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {AvailableSkills[i]}");
-                }
                 return true;
             }
             return false;
         }
 
-        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money}$\nДоспехи: {Armor}\nОружие: {Weapon}\nУмения:\n{GetMySkills()}"; }
+        internal string GetMySkills(List<Skill> skills)
+        {
+            string text = "";
+            for (int i = 0; i < skills.Count; i++)
+            {
+                text += $"{i + 1}. {skills[i]}\n";
+            }
+            return text;
+        }
+
+        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money} монет\nДоспехи: {Armor}\nОружие: {Weapon}\nУмения:\n{GetMySkills(Skills)}"; }
     }
 }

@@ -11,13 +11,13 @@ namespace Dungeon_Heroes
         internal Rage(string name, int mana, int price, double buff) : base(name, mana, price)
         {
             this.buff = buff;
-            Description = $"DMG +{(buff - 1) * 100}% -{Mana}MP";
+            description = $"DMG +{(buff - 1) * 100}% -{Mana}MP";
         }
 
         internal Rage()
         {
             Name = "Ярость";
-            buff = 2;
+            buff = 1.5;
         }
 
         internal override void UseSkill(Hero hero)
