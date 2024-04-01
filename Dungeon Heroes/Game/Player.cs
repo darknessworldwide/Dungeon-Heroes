@@ -1,29 +1,65 @@
-﻿using Dungeon_Heroes.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Dungeon_Heroes.Game
+namespace Dungeon_Heroes
 {
     internal class Player
     {
-        internal Hero CreateHero(Hub hub)
+        internal List<Skill> StartSkills { get; }
+
+        internal Player()
         {
-            Console.Write("Введите имя вашего героя: ");
-            string name = Console.ReadLine();
+            StartSkills = new List<Skill>
+            {
+                new Healing("Луч Исцеления", 20, 70, 30),
+                new SteelShield("Аура Защиты", 30, 80, 1.8),
+                new Rage("Гнев Титана", 30, 100, 2.0),
+            };
+        }
 
-            Console.WriteLine("Выберите начальное умение:");
-            hub.ShowSkills();
+        internal Hero CreateAHero()
+        {
+            while (true)
+            {
+                Console.Write("Введите имя для вашего героя: ");
+                string name = Console.ReadLine();
 
-            int skillOption = hub.GetOption(hub.Skills.Count);
+                Console.WriteLine("\nВыберите начальное умение:");
+                ShowStartSkills();
 
-            Hero hero = new Hero(name, 100, 100, 10000, new Armor("Накидка", 1, 50), new List<Skill> { hub.Skills[skillOption - 1] });
+                int len = StartSkills.Count;
+                int option = GetOption(len);
+                if (option == 0) continue;
 
-            hub.Skills.RemoveAt(skillOption - 1);
+                Skill skill = StartSkills[option - 1];
+                Hero hero = new Hero(name, skill);
 
-            return hero;
+                StartSkills.Remove(skill);
+                Console.Clear();
+
+                return hero;
+            }
+        }
+
+        internal int GetOption(int len)
+        {
+            int option;
+            while (!int.TryParse(Console.ReadLine(), out option) || option < 0 || option > len)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("Такого выбора нет! Попробуйте еще раз");
+                Console.ResetColor();
+            }
+            return option;
+        }
+
+        private void ShowStartSkills()
+        {
+            for (int i = 0; i < StartSkills.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {StartSkills[i]}");
+            }
+            Console.WriteLine("0. Назад");
         }
     }
 }

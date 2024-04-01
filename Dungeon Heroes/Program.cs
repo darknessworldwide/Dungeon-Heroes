@@ -1,10 +1,4 @@
-﻿using Dungeon_Heroes.Game;
-using Dungeon_Heroes.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Dungeon_Heroes
 {
@@ -13,13 +7,13 @@ namespace Dungeon_Heroes
         static void Main(string[] args)
         {
             Player player = new Player();
-            Hub hub = new Hub();
+            Hero hero = player.CreateAHero();
 
-            Hero hero = player.CreateHero(hub);
+            Store store = new Store();
+            store.Skills.InsertRange(0, player.StartSkills);
 
-            Console.WriteLine(hero);
-
-            Console.ReadLine();
+            Hub hub = new Hub(player, store, hero);
+            hub.OpenGameMenu();
         }
     }
 }

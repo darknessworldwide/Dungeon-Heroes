@@ -1,40 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Dungeon_Heroes.Models
+namespace Dungeon_Heroes
 {
     internal class Hero
     {
-        internal string Name { get; }
-        internal double Health { get; set; }
-        internal double Mana { get; set; }
+        internal string Name { get; set; }
+        internal int Health { get; set; }
+        internal int Mana { get; set; }
         internal int Money { get; set; }
         internal Armor Armor { get; set; }
+        internal Weapon Weapon { get; set; }
         internal List<Skill> Skills { get; set; }
+        internal List<Skill> AvailableSkills { get; set; }
 
-        internal Hero(string name, double health, double mana, int money, Armor armor, List<Skill> skills)
+        internal Hero(string name, Skill skill)
         {
             Name = name;
-            Health = health;
-            Mana = mana;
-            Money = money;
-            Armor = armor;
-            Skills = skills;
+            Health = 100;
+            Mana = 100;
+            Money = 30000;
+            Armor = new Armor("Накидка", 1, 0);
+            Weapon = new Weapon("Дубинка", 15, 0);
+            Skills = new List<Skill>() { skill };
         }
 
-        string GetMySkills()
+        internal bool SkillsAvailable()
+        {
+            AvailableSkills = new List<Skill>();
+
+            foreach (Skill skill in Skills)
+            {
+                if (Mana >= skill.Mana)
+                {
+                    AvailableSkills.Add(skill);
+                }
+            }
+
+            if (AvailableSkills.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        internal string GetMySkills(List<Skill> skills)
         {
             string text = "";
-            for (int i = 0; i < Skills.Count; i++)
+            for (int i = 0; i < skills.Count; i++)
             {
-                text += $"{i + 1}. {Skills[i]}\n";
+                text += $"{i + 1}. {skills[i]}\n";
             }
             return text;
         }
 
-        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money}$\nДоспехи: {Armor}\nУмения:\n{GetMySkills()}"; }
+        public override string ToString() { return $"{Name} HP[{Health}/100] MP[{Mana}/100] {Money} монет\nДоспехи: {Armor}\nОружие: {Weapon}\nУмения:\n{GetMySkills(Skills)}"; }
     }
 }
